@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+
+  caddy:
+    image: abiosoft/caddy:no-stats
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      searx:
+        ipv4_address: 10.10.10.2
+    command: -email ${LETSENCRYPT_EMAIL} -agree=true -log stdout -host ${SEARX_HOSTNAME} -conf /etc/Caddyfile
+    restart: always
+    # -quic=true -http2=true
+    volumes:
+      - ./Caddyfile:/etc/Caddyfile
+      - ./caddy:/root/.caddy
+
+#  filtron:
+#    image: filtron
+#    hostname: filtron
+#    networks:
+#      searx:
+#        ipv4_address: 10.10.10.3
+
+  searx:
+    image: searx
+    hostname: searx
+    networks:
+      searx:
+         ipv4_address: 10.10.10.4
+    volumes:
+      - ./searx:/etc/searx
+    environment:
+      - BASE_URL=http://${SEARX_HOSTNAME}/
+      - MORTY_URL=http://${SEARX_HOSTNAME}/morty/
+      - MORTY_KEY=${MORTY_KEY}
+
+  morty:
+    image: morty
+    hostname: morty
+    networks:
+      searx:
+        ipv4_address: 10.10.10.5
+    command: -listen 10.10.10.5:3000 -key ${MORTY_KEY}
+    environment:
+      - MORTY_KEY=${MORTY_KEY}
+
+networks:
+  searx:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.10.10.0/24

@@ -1,0 +1,51 @@
+{$SEARX_HOSTNAME} {
+  tls self_signed
+  gzip
+  root /srv
+
+  header / {
+  	# Enable HTTP Strict Transport Security (HSTS) to force clients to always
+	# connect via HTTPS
+	# Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+	# Enable cross-site filter (XSS) and tell browser to block detected attacks
+	X-XSS-Protection "1; mode=block"
+
+	# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
+	X-Content-Type-Options "nosniff"
+
+	# Disallow the site to be rendered within a frame (clickjacking protection)
+	X-Frame-Options "SAMEORIGIN"
+
+	# CSP
+	Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; object-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; media-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com"
+	X-Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; object-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; media-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com"
+	X-WebKit-CSP "default-src 'self'; script-src 'self' 'unsafe-inline' overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; object-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; media-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com"
+
+	# 
+	Access-Control-Allow-Methods "GET, POST, OPTIONS"
+	Access-Control-Allow-Origin  "*"
+
+	# Disable some features
+	Feature-Policy "accelerometer 'none';autoplay 'none';camera 'none';fullscreen 'none';geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';notifications 'none';payment 'none';push 'none';speaker 'none';sync-xhr 'none';usb 'none';vibrate 'none';vr 'none'"
+
+	# Cache
+	Cache-Control "private, no-store"
+	Pragma "no-cache"
+
+	# Referer
+	Referrer-Policy "no-referrer"
+
+	# Remove Server header
+	-Server
+  }
+
+  proxy / searx:8080 {
+    	except /morty
+  }
+
+  proxy /morty morty:3000 {
+  	transparent
+  }
+
+}
