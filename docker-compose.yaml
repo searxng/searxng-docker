@@ -11,15 +11,16 @@ services:
       searx:
         ipv4_address: 10.10.10.2
     command: -email ${LETSENCRYPT_EMAIL} -agree=true -log stdout -host ${SEARX_HOSTNAME} -conf /etc/Caddyfile
-    restart: always
-    # -quic=true -http2=true
     volumes:
       - ./Caddyfile:/etc/Caddyfile
       - ./caddy:/root/.caddy
+    environment:
+      - SEARX_HOSTNAME=${SEARX_HOSTNAME}
 
 #  filtron:
 #    image: filtron
 #    hostname: filtron
+#    restart: always
 #    networks:
 #      searx:
 #        ipv4_address: 10.10.10.3
@@ -27,23 +28,25 @@ services:
   searx:
     image: searx
     hostname: searx
+    restart: always
     networks:
       searx:
          ipv4_address: 10.10.10.4
     volumes:
       - ./searx:/etc/searx
     environment:
-      - BASE_URL=http://${SEARX_HOSTNAME}/
-      - MORTY_URL=http://${SEARX_HOSTNAME}/morty/
+      - BASE_URL=https://${SEARX_HOSTNAME}/
+      - MORTY_URL=https://${SEARX_HOSTNAME}/morty/
       - MORTY_KEY=${MORTY_KEY}
 
   morty:
     image: morty
     hostname: morty
+    restart: always
     networks:
       searx:
         ipv4_address: 10.10.10.5
-    command: -listen 10.10.10.5:3000 -key ${MORTY_KEY}
+    command: -listen 10.10.10.5:3000
     environment:
       - MORTY_KEY=${MORTY_KEY}
 
