@@ -17,10 +17,8 @@
 	# Disallow the site to be rendered within a frame (clickjacking protection)
 	X-Frame-Options "SAMEORIGIN"
 
-	# CSP
-	Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; object-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; media-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com"
-	X-Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; object-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; media-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com"
-	X-WebKit-CSP "default-src 'self'; script-src 'self' 'unsafe-inline' overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; object-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com; media-src overpass-api.de *.tile.openstreetmap.org www.youtube-nocookie.com player.vimeo.com www.dailymotion.com"
+	# CSP (see http://content-security-policy.com/ )
+	Content-Security-Policy "default-src 'self'; worker-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src http://www.youtube-nocookie.com http://player.vimeo.com http://www.dailymotion.com"
 
 	# 
 	Access-Control-Allow-Methods "GET, POST, OPTIONS"
