@@ -1,6 +1,8 @@
-{$SEARX_HOSTNAME} {
+{$SEARX_PROTOCOL}{$SEARX_HOSTNAME} {
   tls self_signed
-  gzip
+  gzip {
+    not /morty
+  }
   root /srv
 
   header / {
@@ -28,22 +30,40 @@
 	Feature-Policy "accelerometer 'none';autoplay 'none';camera 'none';fullscreen 'none';geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';notifications 'none';payment 'none';push 'none';speaker 'none';sync-xhr 'none';usb 'none';vibrate 'none';vr 'none'"
 
 	# Cache
-	Cache-Control "private, no-store"
+	Cache-Control "no-cache, no-store, must-revalidate"
 	Pragma "no-cache"
 
 	# Referer
 	Referrer-Policy "no-referrer"
 
+	# X-Robots-Tag
+	X-Robots-Tag "noindex, noarchive, nofollow"
+
 	# Remove Server header
 	-Server
   }
 
-  proxy / searx:8080 {
-    	except /morty
+  header /static {
+	Cache-Control "public, max-age=31536000"
+	-Pragma
   }
 
-  proxy /morty morty:3000 {
-  	transparent
+  proxy / 127.0.0.1:4040 {
+        transparent
+  }
+
+  basicauth /filtron {$FILTRON_USER} {$FILTRON_PASSWORD}
+  proxy /filtron/rules 127.0.0.1:4041 {
+        without /filtron
+  }
+
+
+  proxy /morty 127.0.0.1:3000
+
+  limits {
+	header 100KB
+	body   / 100KB
+	body   /morty 5MB
   }
 
 }

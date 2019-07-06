@@ -3,29 +3,45 @@ version: '3.7'
 services:
 
   caddy:
-    image: abiosoft/caddy:no-stats
+    container_name: caddy
+    image: abiosoft/caddy:1.0.1-no-stats
     ports:
       - 80:80
       - 443:443
-    networks:
-      searx:
-        ipv4_address: 10.10.10.2
-    command: -email ${LETSENCRYPT_EMAIL} -agree=true -log stdout -host ${SEARX_HOSTNAME} -conf /etc/Caddyfile
+    network_mode: host
+    command: -email ${LETSENCRYPT_EMAIL} -agree=${LETSENCRYPT_AGREE} -log stdout -host ${SEARX_HOSTNAME} -conf /etc/Caddyfile
     volumes:
       - ./Caddyfile:/etc/Caddyfile
       - ./caddy:/root/.caddy
+      - ./srv:/srv
     environment:
       - SEARX_HOSTNAME=${SEARX_HOSTNAME}
+      - SEARX_PROTOCOL=${SEARX_PROTOCOL}
+      - FILTRON_USER=${FILTRON_USER}
+      - FILTRON_PASSWORD=${FILTRON_PASSWORD}
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
 
-#  filtron:
-#    image: filtron
-#    hostname: filtron
-#    restart: always
-#    networks:
-#      searx:
-#        ipv4_address: 10.10.10.3
+  filtron:
+    container_name: filtron
+    image: filtron
+    hostname: filtron
+    restart: always
+    ports:
+      - 127.0.0.1:4040:4040
+      - 127.0.0.1:4041:4041
+    networks:
+      searx:
+        ipv4_address: 10.10.10.3
+    command: -listen 10.10.10.3:4040 -api 10.10.10.3:4041 -target 10.10.10.4:8080
+    read_only: true
+    cap_drop:
+      - ALL
 
   searx:
+    container_name: searx
     image: searx
     hostname: searx
     restart: always
@@ -35,20 +51,35 @@ services:
     volumes:
       - ./searx:/etc/searx
     environment:
+      - BIND_ADDRESS=10.10.10.4:8080
       - BASE_URL=https://${SEARX_HOSTNAME}/
       - MORTY_URL=https://${SEARX_HOSTNAME}/morty/
       - MORTY_KEY=${MORTY_KEY}
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
 
   morty:
+    container_name: morty
     image: morty
     hostname: morty
     restart: always
+    ports:
+      - 127.0.0.1:3000:3000
     networks:
       searx:
         ipv4_address: 10.10.10.5
-    command: -listen 10.10.10.5:3000
+    command: -listen 10.10.10.5:3000 -timeout 3 -ipv6
     environment:
       - MORTY_KEY=${MORTY_KEY}
+    logging:
+      driver: none
+    read_only: true
+    cap_drop:
+      - ALL
 
 networks:
   searx:
