@@ -23,6 +23,7 @@ services:
       - ALL
     cap_add:
       - NET_BIND_SERVICE
+      - DAC_OVERRIDE
 
   filtron:
     container_name: filtron
@@ -61,6 +62,7 @@ services:
       - CHOWN
       - SETGID
       - SETUID
+      - DAC_OVERRIDE
 
   morty:
     container_name: morty
