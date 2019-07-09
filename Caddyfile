@@ -1,5 +1,5 @@
 {$SEARX_PROTOCOL}{$SEARX_HOSTNAME} {
-  tls self_signed
+  tls {$SEARX_TLS}
   gzip {
     not /morty
   }
@@ -48,15 +48,24 @@
 	-Pragma
   }
 
+  cache {
+        match_path /static
+        status_header X-Cache-Status
+        default_max_age 12h
+        path /tmp/caddy-cache
+  }
+
+  rewrite /status /searx-checker/status.json
+
   proxy / 127.0.0.1:4040 {
         transparent
+	except /searx-checker/status.json
   }
 
   basicauth /filtron {$FILTRON_USER} {$FILTRON_PASSWORD}
   proxy /filtron/rules 127.0.0.1:4041 {
         without /filtron
   }
-
 
   proxy /morty 127.0.0.1:3000
 
@@ -65,5 +74,7 @@
 	body   / 100KB
 	body   /morty 5MB
   }
+
+  # ratelimit * /morty 150 300 hour
 
 }

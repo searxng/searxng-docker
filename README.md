@@ -5,26 +5,42 @@ See https://github.com/asciimoo/searx/issues/1561 )
 
 Do not use it for now : this is a work in progress and there is no antibot feature.
 
+## What is included ?
+
+- [Caddy](https://github.com/abiosoft/caddy-docker) as a reverse proxy (create a LetsEncrypt certificate automaticaly)
+- [filtron](https://github.com/asciimoo/filtron): See [#4](https://github.com/asciimoo/filtron/pull/4) to build the docker image.
+- [searx](https://github.com/asciimoo/searx): See [#1629](https://github.com/asciimoo/searx/pull/1629) to build the docker image.
+- [morty](https://github.com/asciimoo/morty): clone the project, then "make build" to create the docker image
+
 ## How to use it
 - [Install docker](https://docs.docker.com/install/)
 - [Install docker-compose](https://docs.docker.com/compose/install/)
 - Get searx-docker
 ```sh
-mkdir -p /opt
-cd /opt
+cd /usr/local
 git clone https://github.com/searx/searx-docker.git
+cd searx-docker
 ```
-- Configure the .env file
-- Check using ```docker-compose up```
-- If everything is working, then :
+- Edit the .env file according to your need
+- Check everything is working: ```./start.sh```,
+- ```cp searx-docker.service.template searx-docker.service```
+- edit the content of ```WorkingDirectory``` in the ```searx-docker.service``` file (only if the installation path is different from /usr/local/searx-docker)
+- Install the systemd unit :
 ```sh
-cp /opt/searx-docker/searx-docker.service  /etc/systemd/system
+systemctl enable $(pwd)/searx-docker.service
 systemctl start searx-docker.service
 ```
 
-## What is included ?
+## Custom docker-compose.yaml
 
-- [Caddy](https://github.com/abiosoft/caddy-docker) as a reverse proxy (take care to call LetsEncrypt)
-- [filtron](https://github.com/asciimoo/filtron): See [#4](https://github.com/asciimoo/filtron/pull/4) to build the docker image.
-- [searx](https://github.com/asciimoo/searx): See [#1629](https://github.com/asciimoo/searx/pull/1629) to build the docker image.
-- [morty](https://github.com/asciimoo/morty): clone the project, then "make build" to create the docker image
+Do not modify docker-compose.yaml otherwise you won't be able to update easily from the git repository.
+
+It is possible to the [extend feature](https://docs.docker.com/compose/extends/) of docker-compose :
+- stop the service : ```systemctl stop searx-docker.service```
+- create a new docker-compose-extend.yaml, check with ```start.sh```
+- update searx-docker.service (see SEARX_DOCKERCOMPOSEFILE)
+- restart the servie  : ```systemctl restart searx-docker.service```
+
+## How to update ?
+
+- Check the content of ```update.sh```

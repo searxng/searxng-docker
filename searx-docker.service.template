@@ -1,0 +1,17 @@
+<[Unit]
+Description=searx service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+
+Environment=SEARX_DOCKERCOMPOSEFILE=docker-compose.yaml
+
+WorkingDirectory=/usr/local/searx-docker
+
+ExecStart=/bin/sh -c "start.sh"
+ExecStop=/bin/sh -c "stop.sh"
+
+[Install]
+WantedBy=multi-user.target

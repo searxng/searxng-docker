@@ -11,12 +11,14 @@ services:
     network_mode: host
     command: -email ${LETSENCRYPT_EMAIL} -agree=${LETSENCRYPT_AGREE} -log stdout -host ${SEARX_HOSTNAME} -conf /etc/Caddyfile
     volumes:
-      - ./Caddyfile:/etc/Caddyfile
-      - ./caddy:/root/.caddy
-      - ./srv:/srv
+      - ./Caddyfile:/etc/Caddyfile:rw
+      - ./caddy:/root/.caddy:rw
+      - ./srv:/srv:rw
+      - searx-checker:/srv/searx-checker:rw
     environment:
       - SEARX_HOSTNAME=${SEARX_HOSTNAME}
-      - SEARX_PROTOCOL=${SEARX_PROTOCOL}
+      - SEARX_PROTOCOL=${SEARX_PROTOCOL:-}
+      - SEARX_TLS=${SEARX_TLS:-}
       - FILTRON_USER=${FILTRON_USER}
       - FILTRON_PASSWORD=${FILTRON_PASSWORD}
     cap_drop:
@@ -43,14 +45,15 @@ services:
 
   searx:
     container_name: searx
-    image: searx
+    image: asciimoo/searx
     hostname: searx
     restart: always
     networks:
       searx:
          ipv4_address: 10.10.10.4
+    command: ${SEARX_COMMAND:-}
     volumes:
-      - ./searx:/etc/searx
+      - ./searx:/etc/searx:rw
     environment:
       - BIND_ADDRESS=10.10.10.4:8080
       - BASE_URL=https://${SEARX_HOSTNAME}/
@@ -74,7 +77,7 @@ services:
     networks:
       searx:
         ipv4_address: 10.10.10.5
-    command: -listen 10.10.10.5:3000 -timeout 3 -ipv6
+    command: -listen 10.10.10.5:3000 -timeout 6 -ipv6
     environment:
       - MORTY_KEY=${MORTY_KEY}
     logging:
@@ -83,9 +86,24 @@ services:
     cap_drop:
       - ALL
 
+  searx-checker:
+    container_name: searx-checker
+    image: searx/searx-checker
+    hostname: searx-checker
+    restart: always
+    networks:
+      searx:
+        ipv4_address: 10.10.10.6
+    command: -cron -o html/data/status.json http://10.10.10.4:8080
+    volumes:
+      - searx-checker:/usr/local/searx-checker/html/data:rw
+
 networks:
   searx:
     ipam:
       driver: default
       config:
         - subnet: 10.10.10.0/24
+
+volumes:
+  searx-checker:
