@@ -29,7 +29,7 @@ services:
 
   filtron:
     container_name: filtron
-    image: filtron
+    image: dalf/filtron
     hostname: filtron
     restart: always
     ports:
@@ -45,7 +45,7 @@ services:
 
   searx:
     container_name: searx
-    image: asciimoo/searx
+    image: dalf/searx
     hostname: searx
     restart: always
     networks:
@@ -69,7 +69,7 @@ services:
 
   morty:
     container_name: morty
-    image: morty
+    image: dalf/morty
     hostname: morty
     restart: always
     ports:
