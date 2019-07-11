@@ -1,5 +1,3 @@
-BASE_DIR="$(dirname -- "`readlink -f -- "$0"`")"
-cd -- "$BASE_DIR"
 set -e
 
 DOCKERCOMPOSE=$(which docker-compose || echo "/usr/local/bin/docker-compose")
