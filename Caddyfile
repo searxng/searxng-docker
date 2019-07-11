@@ -20,7 +20,7 @@
 	X-Frame-Options "SAMEORIGIN"
 
 	# CSP (see http://content-security-policy.com/ )
-	Content-Security-Policy "default-src 'self'; worker-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src http://www.youtube-nocookie.com http://player.vimeo.com http://www.dailymotion.com"
+	Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src http://www.youtube-nocookie.com http://player.vimeo.com http://www.dailymotion.com"
 
 	# 
 	Access-Control-Allow-Methods "GET, POST, OPTIONS"
@@ -30,7 +30,7 @@
 	Feature-Policy "accelerometer 'none';autoplay 'none';camera 'none';fullscreen 'none';geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';notifications 'none';payment 'none';push 'none';speaker 'none';sync-xhr 'none';usb 'none';vibrate 'none';vr 'none'"
 
 	# Cache
-	Cache-Control "no-cache, no-store, must-revalidate"
+	Cache-Control "no-cache, no-store"
 	Pragma "no-cache"
 
 	# Referer
@@ -41,6 +41,10 @@
 
 	# Remove Server header
 	-Server
+  }
+
+  header /morty {
+        Content-Security-Policy "default-src 'none'; style-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; img-src: 'self'; font-src 'self'"
   }
 
   header /static {
@@ -55,7 +59,10 @@
         path /tmp/caddy-cache
   }
 
-  rewrite /status /searx-checker/status.json
+  rewrite / {
+        regexp ^/status$
+        to /searx-checker/status.json
+  }
 
   proxy / 127.0.0.1:4040 {
         transparent
