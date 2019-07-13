@@ -47,7 +47,7 @@ services:
 
   searx:
     container_name: searx
-    image: dalf/searx
+    image: searx/searx:latest
     hostname: searx
     restart: always
     networks:
