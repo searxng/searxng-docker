@@ -10,7 +10,7 @@ This is a work in progress, the bot protection is basic and not battle tested, a
 | -- | -- | -- | -- |
 | [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [abiosoft/caddy:1.0.1-no-stats](https://hub.docker.com/r/abiosoft/caddy) | [Dockerfile](https://github.com/abiosoft/caddy-docker/blob/master/Dockerfile-no-stats) |
 | [Filtron](https://github.com/asciimoo/filtron) |  Filtering reverse HTTP proxy, bot and abuse protection | [dalf/filtron:latest](https://hub.docker.com/r/dalf/filtron) | See [asciimoo/filtron#4](https://github.com/asciimoo/filtron/pull/4) |
-| [Searx](https://github.com/asciimoo/searx) | searx by itself | [searx/searx:latest](https://hub.docker.com/r/searx/searx) | See [Dockerfile](https://github.com/searx/searx/blob/master/Dockerfile) |
+| [Searx](https://github.com/asciimoo/searx) | searx by itself | [searx/searx:latest](https://hub.docker.com/r/searx/searx) | [Dockerfile](https://github.com/searx/searx/blob/master/Dockerfile) |
 | [Morty](https://github.com/asciimoo/morty) | Privacy aware web content sanitizer proxy as a service. | [dalf/morty:latest](https://hub.docker.com/r/dalf/morty) | [Dockerfile](https://github.com/dalf/morty/blob/master/Dockerfile) |
 | [Searx-checker](https://github.com/searx/searx-checker) | Check which engines return results of the instance.<br>JSON result available at<br>```https://{SEARX_HOSTNAME}/status```<br>Automatically updated every 24h | [searx/searx-checker:latest](https://hub.docker.com/r/searx/searx-checker) | [Dockerfile](https://github.com/searx/searx-checker/blob/master/Dockerfile) |
 
@@ -58,4 +58,3 @@ For now only the amd64 platform is supported.
 ## How to update ?
 
 Check the content of [```update.sh```](https://github.com/searx/searx-docker/blob/master/update.sh)
-
