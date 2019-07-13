@@ -1,46 +1,51 @@
 {$SEARX_PROTOCOL}{$SEARX_HOSTNAME} {
   tls {$SEARX_TLS}
   gzip {
-    not /morty
+        not /morty
   }
   root /srv
 
+  header /config {
+        Access-Control-Allow-Methods "GET, OPTIONS"
+        Access-Control-Allow-Origin  "*"
+  }
+
+  header /status {
+        Access-Control-Allow-Methods "GET, OPTIONS"
+        Access-Control-Allow-Origin  "*"
+  }
+
   header / {
-  	# Enable HTTP Strict Transport Security (HSTS) to force clients to always
-	# connect via HTTPS
-	# Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        # Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
-	# Enable cross-site filter (XSS) and tell browser to block detected attacks
-	X-XSS-Protection "1; mode=block"
+        # Enable cross-site filter (XSS) and tell browser to block detected attacks
+        X-XSS-Protection "1; mode=block"
 
-	# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
-	X-Content-Type-Options "nosniff"
+        # Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
+        X-Content-Type-Options "nosniff"
 
-	# Disallow the site to be rendered within a frame (clickjacking protection)
-	X-Frame-Options "SAMEORIGIN"
+        # Disallow the site to be rendered within a frame (clickjacking protection)
+        X-Frame-Options "SAMEORIGIN"
 
-	# CSP (see http://content-security-policy.com/ )
-	Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src http://www.youtube-nocookie.com http://player.vimeo.com http://www.dailymotion.com"
+        # CSP (see http://content-security-policy.com/ )
+        Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
 
-	# 
-	Access-Control-Allow-Methods "GET, POST, OPTIONS"
-	Access-Control-Allow-Origin  "*"
+        # Disable some features
+        Feature-Policy "accelerometer 'none';autoplay 'none';camera 'none';fullscreen 'none';geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';notifications 'none';payment 'none';push 'none';speaker 'none';sync-xhr 'none';usb 'none';vibrate 'none';vr 'none'"
 
-	# Disable some features
-	Feature-Policy "accelerometer 'none';autoplay 'none';camera 'none';fullscreen 'none';geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';notifications 'none';payment 'none';push 'none';speaker 'none';sync-xhr 'none';usb 'none';vibrate 'none';vr 'none'"
+        # Cache
+        Cache-Control "no-cache, no-store"
+        Pragma "no-cache"
 
-	# Cache
-	Cache-Control "no-cache, no-store"
-	Pragma "no-cache"
+        # Referer
+        Referrer-Policy "no-referrer"
 
-	# Referer
-	Referrer-Policy "no-referrer"
+        # X-Robots-Tag
+        X-Robots-Tag "noindex, noarchive, nofollow"
 
-	# X-Robots-Tag
-	X-Robots-Tag "noindex, noarchive, nofollow"
-
-	# Remove Server header
-	-Server
+        # Remove Server header
+        -Server
   }
 
   header /morty {
@@ -48,15 +53,8 @@
   }
 
   header /static {
-	Cache-Control "public, max-age=31536000"
-	-Pragma
-  }
-
-  cache {
-        match_path /static
-        status_header X-Cache-Status
-        default_max_age 12h
-        path /tmp/caddy-cache
+        Cache-Control "public, max-age=31536000"
+        -Pragma
   }
 
   rewrite / {
@@ -66,7 +64,11 @@
 
   proxy / 127.0.0.1:4040 {
         transparent
-	except /searx-checker/status.json
+        header_upstream X-Forwarded-TlsProto {tls_protocol}
+        header_upstream X-Forwarded-TlsCipher {tls_cipher}
+        header_upstream X-Forwarded-HttpsProto {proto}
+
+        except /searx-checker/status.json
   }
 
   basicauth /filtron {$FILTRON_USER} {$FILTRON_PASSWORD}
@@ -76,12 +78,6 @@
 
   proxy /morty 127.0.0.1:3000
 
-  limits {
-	header 100KB
-	body   / 100KB
-	body   /morty 5MB
-  }
-
-  # ratelimit * /morty 150 300 hour
+  limits 10KB
 
 }
