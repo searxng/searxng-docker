@@ -39,6 +39,8 @@ services:
       searx:
         ipv4_address: 10.10.10.3
     command: -listen 10.10.10.3:4040 -api 10.10.10.3:4041 -target 10.10.10.4:8080
+    volumes:
+      - ./rules.json:/etc/filtron/rules.json:rw
     read_only: true
     cap_drop:
       - ALL
