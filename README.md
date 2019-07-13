@@ -9,8 +9,8 @@ This is a work in progress, the bot protection is basic and not battle tested, a
 | Name | Description | Docker image | Dockerfile |
 | -- | -- | -- | -- |
 | [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [abiosoft/caddy:1.0.1-no-stats](https://hub.docker.com/r/abiosoft/caddy) | [Dockerfile](https://github.com/abiosoft/caddy-docker/blob/master/Dockerfile-no-stats) |
-| [Filtron](https://github.com/asciimoo/filtron) |  Filtering reverse HTTP proxy, bot and abuse protection | [dalf/filtron:latest](https://hub.docker.com/r/dalf/filtron) | See [#4](https://github.com/asciimoo/filtron/pull/4) |
-| [Searx](https://github.com/asciimoo/searx) | searx by itself | [dalf/searx:latest](https://hub.docker.com/r/dalf/searx) | See [#1629](https://github.com/asciimoo/searx/pull/1629) |
+| [Filtron](https://github.com/asciimoo/filtron) |  Filtering reverse HTTP proxy, bot and abuse protection | [dalf/filtron:latest](https://hub.docker.com/r/dalf/filtron) | See [asciimoo/filtron#4](https://github.com/asciimoo/filtron/pull/4) |
+| [Searx](https://github.com/asciimoo/searx) | searx by itself | [dalf/searx:latest](https://hub.docker.com/r/dalf/searx) | See [asciimoo/searx#1629](https://github.com/asciimoo/searx/pull/1629) |
 | [Morty](https://github.com/asciimoo/morty) | Privacy aware web content sanitizer proxy as a service. | [dalf/morty:latest](https://hub.docker.com/r/dalf/morty) | [Dockerfile](https://github.com/dalf/morty/blob/master/Dockerfile) |
 | [Searx-checker](https://github.com/searx/searx-checker) | Check which engines return results of the instance.<br>JSON result available at<br>```https://{SEARX_HOSTNAME}/status```<br>Automatically updated every 24h | [searx/searx-checker:latest](https://hub.docker.com/r/searx/searx-checker) | [Dockerfile](https://github.com/searx/searx-checker/blob/master/Dockerfile) |
 
@@ -23,7 +23,7 @@ cd /usr/local
 git clone https://github.com/searx/searx-docker.git
 cd searx-docker
 ```
-- Edit the .env file according to your need
+- Edit the [.env](https://github.com/searx/searx-docker/blob/master/.env) file according to your need
 - Check everything is working: ```./start.sh```,
 - ```cp searx-docker.service.template searx-docker.service```
 - edit the content of ```WorkingDirectory``` in the ```searx-docker.service``` file (only if the installation path is different from /usr/local/searx-docker)
