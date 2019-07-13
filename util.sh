@@ -24,3 +24,8 @@ if [ ! -f "${DOCKERCOMPOSEFILE}" ]; then
     echo "${DOCKERCOMPOSEFILE} not found" 1>&2
     exit 1
 fi
+
+if [ -x $(git diff --name-only | grep .env) ]; then
+    echo "The .env must be changed" 1>&2
+    exit 1
+fi
