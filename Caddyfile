@@ -29,10 +29,10 @@
         X-Frame-Options "SAMEORIGIN"
 
         # CSP (see http://content-security-policy.com/ )
-        Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
+        Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
 
         # Disable some features
-        Feature-Policy "accelerometer 'none';autoplay 'none';camera 'none';fullscreen 'none';geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';notifications 'none';payment 'none';push 'none';speaker 'none';sync-xhr 'none';usb 'none';vibrate 'none';vr 'none'"
+        Feature-Policy "accelerometer 'none';ambient-light-sensor 'none'; autoplay 'none';camera 'none';encrypted-media 'none';focus-without-user-activation 'none'; fullscreen 'none';geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';payment 'none';picture-in-picture 'none'; speaker 'none';sync-xhr 'none';usb 'none';vr 'none'"
 
         # Cache
         Cache-Control "no-cache, no-store"
@@ -49,7 +49,7 @@
   }
 
   header /morty {
-        Content-Security-Policy "default-src 'none'; style-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; img-src: 'self'; font-src 'self'"
+        Content-Security-Policy "default-src 'none'; style-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; img-src 'self' data:; font-src 'self'; frame-src 'self'"
   }
 
   header /static {
