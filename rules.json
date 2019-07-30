@@ -8,16 +8,37 @@
         "actions": [{ "name": "log"}]
     },
     {
+        "name": "IP limit, all paths",
+        "interval": 3,
+        "limit": 25,
+        "aggregations": ["Header:X-Forwarded-For"],
+        "actions": [
+            {"name": "block",
+             "params": {"message": "Rate limit exceeded, try again later."}}
+        ]
+    },
+    {
+        "name": "useragent limit, all paths",
+        "interval": 30,
+        "limit": 200,
+        "aggregations": ["Header:X-Forwarded-For", "Header:User-Agent"],
+        "stop": true,
+        "actions": [
+            {"name": "block",
+             "params": {"message": "Rate limit exceeded, try again later."}}
+        ]
+    },
+    {
         "name": "search request",
         "filters": ["Param:q", "Path=^(/|/search)$"],
         "subrules": [
             {
                 "name": "robot agent forbidden",
                 "limit": 0,
-                "filters": ["Header:User-Agent=([Cc][Uu][Rr][Ll]|[wW]get|Scrapy|splash|JavaFX|FeedFetcher|python-requests|Go-http-client|Java|Jakarta|okhttp|HttpClient|Jersey|Python|libwww-perl|Ruby|SynHttpClient)"],
+                "stop": true,
+                "filters": ["Header:User-Agent=([Cc][Uu][Rr][Ll]|[wW]get|Scrapy|splash|JavaFX|FeedFetcher|python-requests|Go-http-client|Java|Jakarta|okhttp|HttpClient|Jersey|Python|libwww-perl|Ruby|SynHttpClient|UniversalFeedParser)"],
                 "actions": [
-                    {
-                     "name": "block",
+                    {"name": "block",
                      "params": {"message": "Rate limit exceeded"}}
                 ]
             },
@@ -27,8 +48,7 @@
                 "stop": true,
                 "filters": ["Header:User-Agent=(Googlebot|GoogleImageProxy|bingbot|Baiduspider|yacybot|YandexMobileBot|YandexBot|Yahoo! Slurp|MJ12bot|AhrefsBot|archive.org_bot|msnbot|MJ12bot|SeznamBot|linkdexbot|Netvibes|SMTBot|zgrab|James BOT|Sogou|Abonti|Pixray|Spinn3r|SemrushBot|Exabot|ZmEu|BLEXBot|bitlybot)"],
                 "actions": [
-                    {
-                     "name": "block",
+                    {"name": "block",
                      "params": {"message": "Rate limit exceeded"}}
                 ]
             },
@@ -39,17 +59,17 @@
                 "stop": true,
                 "actions": [
                     {"name": "block",
-                    "params": {"message": "Rate limit exceeded"}}
+                     "params": {"message": "Rate limit exceeded"}}
                 ]
             },
             {
                 "name": "block Connection:close",
-                "filters": ["Connection=close"],
+                "filters": ["Header:Connection=close"],
                 "limit": 0,
                 "stop": true,
                 "actions": [
                     {"name": "block",
-                    "params": {"message": "Rate limit exceeded"}}
+                     "params": {"message": "Rate limit exceeded"}}
                 ]
             },
             {
@@ -59,43 +79,7 @@
                 "stop": true,
                 "actions": [
                     {"name": "block",
-                    "params": {"message": "Rate limit exceeded"}}
-                ]
-            },
-            {
-                "name": "IP limit",
-                "interval": 300,
-                "limit": 128,
-                "stop": true,
-                "aggregations": ["Header:X-Forwarded-For"],
-                "actions": [
-                    {
-                     "name": "block",
-                     "params": {"message": "Rate limit exceeded, try again later."}}
-                ]
-            },
-            {
-                "name": "useragent limit",
-                "interval": 600,
-                "limit": 60,
-                "stop": true,
-                "aggregations": ["Header:X-Forwarded-For", "Header:User-Agent"],
-                "actions": [
-                    {
-                     "name": "block",
-                     "params": {"message": "Rate limit exceeded, try again later."}}
-                ]
-            },
-            {
-                "name": "rss/json limit",
-                "interval": 3600,
-                "limit": 4,
-                "stop": true,
-                "filters": ["Header:User-Agent", "Param:format=(csv|json|rss)"],
-                "actions": [
-                    {
-                     "name": "block",
-                     "params": {"message": "Rate limit exceeded, try again later."}}
+                     "params": {"message": "Rate limit exceeded"}}
                 ]
             },
             {
@@ -105,8 +89,41 @@
                 "stop": true,
                 "actions": [
                     {"name": "block",
-                    "params": {"message": "Rate limit exceeded, try again later."}}
+                     "params": {"message": "Rate limit exceeded"}}
                 ]
+            },
+            {
+                "name": "rss/json limit",
+                "interval": 3600,
+                "limit": 4,
+                "stop": true,
+                "filters": ["Param:format=(csv|json|rss)"],
+                "aggregations": ["Header:X-Forwarded-For"],
+                "actions": [
+                    {"name": "block",
+		     "params": {"message": "Rate limit exceeded, try again later."}}
+                ]
+            },
+            {
+                "name": "IP limit",
+                "interval": 3,
+                "limit": 3,
+                "aggregations": ["Header:X-Forwarded-For"],
+                "actions": [
+                    {"name": "block",
+                     "params": {"message": "Rate limit exceeded, try again later."}}
+                ]
+            },
+            {
+                "name": "IP and useragent limit",
+                "interval": 600,
+                "limit": 60,
+                "stop": true,
+                "aggregations": ["Header:X-Forwarded-For", "Header:User-Agent"],
+                "actions": [
+                    {"name": "block",
+                     "params": {"message": "Rate limit exceeded, try again later."}}
+		]
             }
         ]
     }
