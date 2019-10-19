@@ -4,7 +4,7 @@ services:
 
   caddy:
     container_name: caddy
-    image: abiosoft/caddy:1.0.1-no-stats
+    image: abiosoft/caddy:1.0.3-no-stats
     ports:
       - 80:80
       - 443:443
