@@ -8,7 +8,7 @@ This is a work in progress, the bot protection is basic and not battle tested, a
 
 | Name | Description | Docker image | Dockerfile |
 | -- | -- | -- | -- |
-| [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [abiosoft/caddy:1.0.1-no-stats](https://hub.docker.com/r/abiosoft/caddy) | [Dockerfile](https://github.com/abiosoft/caddy-docker/blob/master/Dockerfile-no-stats) |
+| [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [abiosoft/caddy:1.0.3-no-stats](https://hub.docker.com/r/abiosoft/caddy) | [Dockerfile](https://github.com/abiosoft/caddy-docker/blob/master/Dockerfile-no-stats) |
 | [Filtron](https://github.com/asciimoo/filtron) |  Filtering reverse HTTP proxy, bot and abuse protection | [dalf/filtron:latest](https://hub.docker.com/r/dalf/filtron) | See [asciimoo/filtron#4](https://github.com/asciimoo/filtron/pull/4) |
 | [Searx](https://github.com/asciimoo/searx) | searx by itself | [searx/searx:latest](https://hub.docker.com/r/searx/searx) | [Dockerfile](https://github.com/searx/searx/blob/master/Dockerfile) |
 | [Morty](https://github.com/asciimoo/morty) | Privacy aware web content sanitizer proxy as a service. | [dalf/morty:latest](https://hub.docker.com/r/dalf/morty) | [Dockerfile](https://github.com/dalf/morty/blob/master/Dockerfile) |
@@ -16,7 +16,7 @@ This is a work in progress, the bot protection is basic and not battle tested, a
 
 ## How to use it
 - [Install docker](https://docs.docker.com/install/)
-- [Install docker-compose](https://docs.docker.com/compose/install/)
+- [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0).
 - Get searx-docker
 ```sh
 cd /usr/local
