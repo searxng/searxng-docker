@@ -1,8 +1,6 @@
 [
     {
         "name": "stats.searx.xyz",
-        "interval": 300,
-        "limit": 10,
         "filters": ["Header:X-Forwarded-For=(2a01:4f8:161:542e::2|5.9.58.49)"],
         "stop": true,
         "actions": [{ "name": "log"}]
