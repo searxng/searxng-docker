@@ -62,7 +62,7 @@
         to /searx-checker/status.json
   }
 
-  proxy / 127.0.0.1:4040 {
+  proxy / localhost:4040 {
         transparent
         header_upstream X-Forwarded-TlsProto {tls_protocol}
         header_upstream X-Forwarded-TlsCipher {tls_cipher}
@@ -72,11 +72,11 @@
   }
 
   basicauth /filtron {$FILTRON_USER} {$FILTRON_PASSWORD}
-  proxy /filtron/rules 127.0.0.1:4041 {
+  proxy /filtron/rules localhost:4041 {
         without /filtron
   }
 
-  proxy /morty 127.0.0.1:3000
+  proxy /morty localhost:3000
 
   limits 10KB
 
