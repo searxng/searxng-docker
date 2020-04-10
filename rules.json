@@ -1,7 +1,7 @@
 [
     {
-        "name": "stats.searx.xyz",
-        "filters": ["Header:X-Forwarded-For=(2a01:4f8:161:542e::2|5.9.58.49)"],
+        "name": "searx.space",
+        "filters": ["Header:X-Forwarded-For=(2001:41d0:8:de3::1|176.31.252.227)"],
         "stop": true,
         "actions": [{ "name": "log"}]
     },
