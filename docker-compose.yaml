@@ -30,15 +30,13 @@ services:
   filtron:
     container_name: filtron
     image: dalf/filtron
-    hostname: filtron
     restart: always
     ports:
-      - 127.0.0.1:4040:4040
-      - 127.0.0.1:4041:4041
+      - 4040:4040
+      - 4041:4041
     networks:
-      searx:
-        ipv4_address: 10.10.10.3
-    command: -listen 10.10.10.3:4040 -api 10.10.10.3:4041 -target 10.10.10.4:8080
+      - searx
+    command: -listen 0.0.0.0:4040 -api 0.0.0.0:4041 -target searx:8080
     volumes:
       - ./rules.json:/etc/filtron/rules.json:rw
     read_only: true
@@ -48,16 +46,14 @@ services:
   searx:
     container_name: searx
     image: searx/searx:latest
-    hostname: searx
     restart: always
     networks:
-      searx:
-         ipv4_address: 10.10.10.4
+      - searx
     command: ${SEARX_COMMAND:-}
     volumes:
       - ./searx:/etc/searx:rw
     environment:
-      - BIND_ADDRESS=10.10.10.4:8080
+      - BIND_ADDRESS=0.0.0.0:8080
       - BASE_URL=https://${SEARX_HOSTNAME}/
       - MORTY_URL=https://${SEARX_HOSTNAME}/morty/
       - MORTY_KEY=${MORTY_KEY}
@@ -72,14 +68,12 @@ services:
   morty:
     container_name: morty
     image: dalf/morty
-    hostname: morty
     restart: always
     ports:
-      - 127.0.0.1:3000:3000
+      - 3000:3000
     networks:
-      searx:
-        ipv4_address: 10.10.10.5
-    command: -listen 10.10.10.5:3000 -timeout 6 -ipv6
+      - searx
+    command: -listen 0.0.0.0:3000 -timeout 6 -ipv6
     environment:
       - MORTY_KEY=${MORTY_KEY}
     logging:
@@ -91,12 +85,10 @@ services:
   searx-checker:
     container_name: searx-checker
     image: searx/searx-checker
-    hostname: searx-checker
     restart: always
     networks:
-      searx:
-        ipv4_address: 10.10.10.6
-    command: -cron -o html/data/status.json http://10.10.10.4:8080
+      - searx
+    command: -cron -o html/data/status.json http://searx:8080
     volumes:
       - searx-checker:/usr/local/searx-checker/html/data:rw
 
@@ -104,8 +96,6 @@ networks:
   searx:
     ipam:
       driver: default
-      config:
-        - subnet: 10.10.10.0/24
 
 volumes:
   searx-checker:
