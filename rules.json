@@ -71,8 +71,18 @@
                 ]
             },
             {
-                "name": "block no brotli support",
-                "filters": ["!Header:Accept-Encoding=[; ]?br[; ]?"],
+                "name": "block no gzip support",
+                "filters": ["!Header:Accept-Encoding=(^gzip$|^gzip[;,]|[; ]gzip$|[; ]gzip[;,])"],
+                "limit": 0,
+                "stop": true,
+                "actions": [
+                    {"name": "block",
+                     "params": {"message": "Rate limit exceeded"}}
+                ]
+            },
+            {
+                "name": "block no deflate support",
+                "filters": ["!Header:Accept-Encoding=(^deflate$|^deflate[;,]|[; ]deflate$|[; ]deflate[;,])"],
                 "limit": 0,
                 "stop": true,
                 "actions": [
