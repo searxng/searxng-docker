@@ -4,23 +4,16 @@ services:
 
   caddy:
     container_name: caddy
-    image: abiosoft/caddy:1.0.3-no-stats
-    ports:
-      - 80:80
-      - 443:443
+    image: caddy:2-alpine
     network_mode: host
-    command: -email ${LETSENCRYPT_EMAIL} -agree=${LETSENCRYPT_AGREE} -log stdout -host ${SEARX_HOSTNAME} -conf /etc/Caddyfile
     volumes:
-      - ./Caddyfile:/etc/Caddyfile:rw
-      - ./caddy:/root/.caddy:rw
-      - ./srv:/srv:rw
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - searx-checker:/srv/searx-checker:rw
+      - caddy-data:/data:rw
+      - caddy-config:/config:rw
     environment:
-      - SEARX_HOSTNAME=${SEARX_HOSTNAME}
-      - SEARX_PROTOCOL=${SEARX_PROTOCOL:-}
-      - SEARX_TLS=${SEARX_TLS:-}
-      - FILTRON_USER=${FILTRON_USER}
-      - FILTRON_PASSWORD=${FILTRON_PASSWORD}
+      - SEARX_HOSTNAME=${SEARX_HOSTNAME:-localhost}
+      - SEARX_TLS=${LETSENCRYPT_EMAIL:-internal}
     cap_drop:
       - ALL
     cap_add:
@@ -32,8 +25,8 @@ services:
     image: dalf/filtron
     restart: always
     ports:
-      - 4040:4040
-      - 4041:4041
+      - "127.0.0.1:4040:4040"
+      - "127.0.0.1:4041:4041"
     networks:
       - searx
     command: -listen 0.0.0.0:4040 -api 0.0.0.0:4041 -target searx:8080
@@ -54,8 +47,8 @@ services:
       - ./searx:/etc/searx:rw
     environment:
       - BIND_ADDRESS=0.0.0.0:8080
-      - BASE_URL=https://${SEARX_HOSTNAME}/
-      - MORTY_URL=https://${SEARX_HOSTNAME}/morty/
+      - BASE_URL=https://${SEARX_HOSTNAME:-localhost}/
+      - MORTY_URL=https://${SEARX_HOSTNAME:-localhost}/morty/
       - MORTY_KEY=${MORTY_KEY}
     cap_drop:
       - ALL
@@ -70,7 +63,7 @@ services:
     image: dalf/morty
     restart: always
     ports:
-      - 3000:3000
+      - "127.0.0.1:3000:3000"
     networks:
       - searx
     command: -listen 0.0.0.0:3000 -timeout 6 -ipv6
@@ -99,3 +92,5 @@ networks:
 
 volumes:
   searx-checker:
+  caddy-data:
+  caddy-config:

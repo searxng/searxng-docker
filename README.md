@@ -2,13 +2,11 @@
 
 Create a new searx instance in five minutes using Docker (see https://github.com/asciimoo/searx/issues/1561 )
 
-This is a work in progress, the bot protection is basic and not battle tested, and later on, may [change](https://github.com/unixfox/antibot-proxy).
-
 ## What is included ?
 
 | Name | Description | Docker image | Dockerfile |
 | -- | -- | -- | -- |
-| [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [abiosoft/caddy:1.0.3-no-stats](https://hub.docker.com/r/abiosoft/caddy) | [Dockerfile](https://github.com/abiosoft/caddy-docker/blob/master/Dockerfile-no-stats) |
+| [Caddy](https://github.com/caddy/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [caddy/caddy:2-alpine](https://hub.docker.com/_/caddy) | [Dockerfile](https://github.com/caddyserver/caddy-docker) |
 | [Filtron](https://github.com/asciimoo/filtron) |  Filtering reverse HTTP proxy, bot and abuse protection | [dalf/filtron:latest](https://hub.docker.com/r/dalf/filtron) | See [asciimoo/filtron#4](https://github.com/asciimoo/filtron/pull/4) |
 | [Searx](https://github.com/asciimoo/searx) | searx by itself | [searx/searx:latest](https://hub.docker.com/r/searx/searx) | [Dockerfile](https://github.com/searx/searx/blob/master/Dockerfile) |
 | [Morty](https://github.com/asciimoo/morty) | Privacy aware web content sanitizer proxy as a service. | [dalf/morty:latest](https://hub.docker.com/r/dalf/morty) | [Dockerfile](https://github.com/dalf/morty/blob/master/Dockerfile) |
@@ -58,3 +56,12 @@ For now only the amd64 platform is supported.
 ## How to update ?
 
 Check the content of [```update.sh```](https://github.com/searx/searx-docker/blob/master/update.sh)
+
+## Access to the Filtron API
+
+The [Filtron API](https://github.com/asciimoo/filtron#api) is available on ```http://localhost:4041```
+
+For example, to display the loaded rules:
+```
+curl http://localhost:4041/rules | jq
+```

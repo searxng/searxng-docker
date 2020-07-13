@@ -1,21 +1,36 @@
-{$SEARX_PROTOCOL}{$SEARX_HOSTNAME} {
+{
+  admin off
+}
+
+{$SEARX_HOSTNAME} {
+  log {
+        output discard
+  }
+
   tls {$SEARX_TLS}
-  gzip {
-        not /morty
-  }
-  root /srv
 
-  header /config {
-        Access-Control-Allow-Methods "GET, OPTIONS"
-        Access-Control-Allow-Origin  "*"
+  @api {
+        path /config
+	path /status
   }
 
-  header /status {
-        Access-Control-Allow-Methods "GET, OPTIONS"
-        Access-Control-Allow-Origin  "*"
+  @static {
+        path /static/*
   }
 
-  header / {
+  @notstatic {
+        not path /static/*
+  }
+
+  @morty {
+        path /morty/*
+  }
+
+  @notmorty {
+        not path /morty/*
+  }
+
+  header {
         # Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
@@ -28,15 +43,8 @@
         # Disallow the site to be rendered within a frame (clickjacking protection)
         X-Frame-Options "SAMEORIGIN"
 
-        # CSP (see http://content-security-policy.com/ )
-        Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
-
         # Disable some features
         Feature-Policy "accelerometer 'none';ambient-light-sensor 'none'; autoplay 'none';camera 'none';encrypted-media 'none';focus-without-user-activation 'none'; geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';payment 'none';picture-in-picture 'none'; speaker 'none';sync-xhr 'none';usb 'none';vr 'none'"
-
-        # Cache
-        Cache-Control "no-cache, no-store"
-        Pragma "no-cache"
 
         # Referer
         Referrer-Policy "no-referrer"
@@ -48,36 +56,56 @@
         -Server
   }
 
-  header /morty {
-        Content-Security-Policy "default-src 'none'; style-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; img-src 'self' data:; font-src 'self'; frame-src 'self'"
+  header @api {
+        Access-Control-Allow-Methods "GET, OPTIONS"
+        Access-Control-Allow-Origin  "*"
   }
 
-  header /static {
-        Cache-Control "public, max-age=31536000"
-        -Pragma
+  # Cache
+  header @static {
+        # Cache
+	Cache-Control "public, max-age=31536000"
+	defer
   }
 
-  rewrite / {
-        regexp ^/status$
-        to /searx-checker/status.json
+  header @notstatic {
+        # No Cache
+        Cache-Control "no-cache, no-store"
+        Pragma "no-cache"
   }
 
-  proxy / localhost:4040 {
-        transparent
-        header_upstream X-Forwarded-TlsProto {tls_protocol}
-        header_upstream X-Forwarded-TlsCipher {tls_cipher}
-        header_upstream X-Forwarded-HttpsProto {proto}
-
-        except /searx-checker/status.json
+  # CSP (see http://content-security-policy.com/ )
+  header @morty {
+	Content-Security-Policy "default-src 'none'; style-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; img-src 'self' data:; font-src 'self'; frame-src 'self'"
   }
 
-  basicauth /filtron {$FILTRON_USER} {$FILTRON_PASSWORD}
-  proxy /filtron/rules localhost:4041 {
-        without /filtron
+  header @notmorty {
+        Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
   }
 
-  proxy /morty localhost:3000
+  # Searx-Checker
+  uri replace /status /searx-checker/status.json
+  handle /searx-checker/status.json {
+        root * /srv
+        file_server
+  }
 
-  limits 10KB
+  # Morty
+  handle @morty {
+        reverse_proxy localhost:3000
+  }
+
+  # Filtron
+  handle {
+        encode zstd gzip
+
+        reverse_proxy localhost:4040 {
+               header_up X-Forwarded-Port {http.request.port}
+               header_up X-Forwarded-Proto {http.request.scheme}
+               header_up X-Forwarded-TlsProto {tls_protocol}
+               header_up X-Forwarded-TlsCipher {tls_cipher}
+               header_up X-Forwarded-HttpsProto {proto}
+        }
+  }
 
 }
