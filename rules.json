@@ -1,7 +1,7 @@
 [
     {
         "name": "searx.space",
-        "filters": ["Header:X-Forwarded-For=(2001:41d0:8:de3::1|176.31.252.227)"],
+        "filters": ["Header:X-Forwarded-For=nslookup(check.searx.space)"],
         "stop": true,
         "actions": [{ "name": "log"}]
     },
