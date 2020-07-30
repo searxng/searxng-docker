@@ -66,9 +66,10 @@ services:
       - "127.0.0.1:3000:3000"
     networks:
       - searx
-    command: -listen 0.0.0.0:3000 -timeout 6 -ipv6
+    command: -timeout 6 -ipv6
     environment:
       - MORTY_KEY=${MORTY_KEY}
+      - MORTY_ADDRESS=0.0.0.0:3000
     logging:
       driver: none
     read_only: true
