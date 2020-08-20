@@ -11,7 +11,8 @@ SERVICE_NAME="searx-docker.service"
 # rebase : rebase with autostash, at your own risk
 UPDATE_TYPE="fastforward"
 
-BASE_DIR="$(dirname -- "`readlink -f -- "$0"`")"
+READLINK="$(which readlink greadlink | tail -n1)"
+BASE_DIR="$(dirname -- "`$READLINK -f -- "$0"`")"
 cd -- "$BASE_DIR"
 
 # check if git presence

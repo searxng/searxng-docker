@@ -1,6 +1,7 @@
 #!/bin/sh
 
-BASE_DIR="$(dirname -- "`readlink -f -- "$0"`")"
+READLINK="$(which readlink greadlink | tail -n1)"
+BASE_DIR="$(dirname -- "`$READLINK -f -- "$0"`")"
 cd -- "$BASE_DIR"
 
 . ./util.sh

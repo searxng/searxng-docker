@@ -15,6 +15,7 @@ Create a new searx instance in five minutes using Docker (see https://github.com
 ## How to use it
 - [Install docker](https://docs.docker.com/install/)
 - [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0).
+- only on MacOSX: ```brew install coreutils``` to install ```greadlink```
 - Get searx-docker
 ```sh
 cd /usr/local
