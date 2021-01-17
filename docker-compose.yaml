@@ -8,7 +8,6 @@ services:
     network_mode: host
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - searx-checker:/srv/searx-checker:rw
       - caddy-data:/data:rw
       - caddy-config:/config:rw
     environment:
@@ -76,22 +75,11 @@ services:
     cap_drop:
       - ALL
 
-  searx-checker:
-    container_name: searx-checker
-    image: searx/searx-checker
-    restart: always
-    networks:
-      - searx
-    command: -cron -o html/data/status.json http://searx:8080
-    volumes:
-      - searx-checker:/usr/local/searx-checker/html/data:rw
-
 networks:
   searx:
     ipam:
       driver: default
 
 volumes:
-  searx-checker:
   caddy-data:
   caddy-config:
