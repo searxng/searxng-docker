@@ -5,6 +5,7 @@ services:
   caddy:
     container_name: caddy
     image: caddy:2-alpine
+    restart: on-failure
     network_mode: host
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
