@@ -21,7 +21,8 @@ cd /usr/local
 git clone https://github.com/searx/searx-docker.git
 cd searx-docker
 ```
-- Edit the [.env](https://github.com/searx/searx-docker/blob/master/.env) file according to your need
+- Generate MORTY_KEY ```sed -i "s/ReplaceWithARealKey\!/$(openssl rand -base64 33)/g" .env```
+- Edit the other settings in [.env](https://github.com/searx/searx-docker/blob/master/.env) file according to your need
 - Check everything is working: ```./start.sh```,
 - ```cp searx-docker.service.template searx-docker.service```
 - edit the content of ```WorkingDirectory``` in the ```searx-docker.service``` file (only if the installation path is different from /usr/local/searx-docker)
