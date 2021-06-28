@@ -21,7 +21,7 @@ cd /usr/local
 git clone https://github.com/searx/searx-docker.git
 cd searx-docker
 ```
-- Generate MORTY_KEY ```sed -i "s/ReplaceWithARealKey\!/$(openssl rand -base64 33)/g" .env```
+- Generate MORTY_KEY ```sed -i "s|ReplaceWithARealKey\!|$(openssl rand -base64 33)|g" .env```
 - Edit the other settings in [.env](https://github.com/searx/searx-docker/blob/master/.env) file according to your need
 - Check everything is working: ```./start.sh```,
 - ```cp searx-docker.service.template searx-docker.service```
