@@ -4,7 +4,7 @@
 #
 
 # change if require
-SERVICE_NAME="searx-docker.service"
+SERVICE_NAME="searxng-docker.service"
 
 # change if require :
 # fastforward : only fast-forward
@@ -46,7 +46,7 @@ if [ "$current_commit" = "$origin_master_commit" ]; then
 fi
 
 # docker stuff
-SEARX_DOCKERCOMPOSE=$(grep "Environment=SEARX_DOCKERCOMPOSEFILE=" "$SERVICE_NAME" | awk -F\= '{ print $3 }')
+SEARXNG_DOCKERCOMPOSE=$(grep "Environment=SEARXNG_DOCKERCOMPOSEFILE=" "$SERVICE_NAME" | awk -F\= '{ print $3 }')
 . ./util.sh
 
 if [ ! -x "$(which systemctl)" ]; then
@@ -78,16 +78,16 @@ else
     # remove dangling images
     docker rmi $(docker images -f "dangling=true" -q)
 
-    # display searx version
-    SEARX_IMAGE=$(cat $DOCKERCOMPOSEFILE | grep "searx/searx" | grep -v "searx-checker" | awk '{ print $2 }')
-    SEARX_VERSION=$(docker inspect -f '{{index .Config.Labels "org.label-schema.version"}}' $SEARX_IMAGE)
-    echo "Searx version: $SEARX_VERSION"
-    docker images --digests "searx/*:latest"
+    # display SearxNG version
+    SEARXNG_IMAGE=$(cat $DOCKERCOMPOSEFILE | grep "searxng/searxng" | awk '{ print $2 }')
+    SEARXNG_VERSION=$(docker inspect -f '{{index .Config.Labels "org.label-schema.version"}}' $SEARXNG_IMAGE)
+    echo "SearXNG version: $SEARXNG_VERSION"
+    docker images --digests "searxng/*:latest"
 
-    # update searx configuration
+    # update SearxNG configuration
     source ./.env
-    docker-compose -f $DOCKERCOMPOSEFILE run searx ${SEARX_COMMAND} -d
+    docker-compose -f $DOCKERCOMPOSEFILE run searxng ${SEARXNG_COMMAND} -d
 
     # let the user see
-    echo "Use\nsystemctl start \"${SERVICE_NAME}\"\nto restart searx"
+    echo "Use\nsystemctl start \"${SERVICE_NAME}\"\nto restart SearXNG"
 fi

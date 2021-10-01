@@ -1,6 +1,6 @@
 *~
 
-searx-docker.service
+searxng-docker.service
 caddy
 srv
 searx
