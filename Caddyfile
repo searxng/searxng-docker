@@ -2,12 +2,12 @@
   admin off
 }
 
-{$SEARX_HOSTNAME} {
+{$SEARXNG_HOSTNAME} {
   log {
         output discard
   }
 
-  tls {$SEARX_TLS}
+  tls {$SEARXNG_TLS}
 
   @api {
         path /config

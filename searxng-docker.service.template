@@ -1,0 +1,16 @@
+[Unit]
+Description=SearXNG service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+
+Environment=SEARXNG_DIR=/usr/local/searxng-docker
+Environment=SEARXNG_DOCKERCOMPOSEFILE=docker-compose.yaml
+
+ExecStart=/bin/sh -c "${SEARXNG_DIR}/start.sh"
+ExecStop=/bin/sh -c "${SEARXNG_DIR}/stop.sh"
+
+[Install]
+WantedBy=multi-user.target

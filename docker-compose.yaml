@@ -12,8 +12,8 @@ services:
       - caddy-data:/data:rw
       - caddy-config:/config:rw
     environment:
-      - SEARX_HOSTNAME=${SEARX_HOSTNAME:-localhost}
-      - SEARX_TLS=${LETSENCRYPT_EMAIL:-internal}
+      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-localhost}
+      - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
     cap_drop:
       - ALL
     cap_add:
@@ -28,27 +28,27 @@ services:
       - "127.0.0.1:4040:4040"
       - "127.0.0.1:4041:4041"
     networks:
-      - searx
-    command: -listen 0.0.0.0:4040 -api 0.0.0.0:4041 -target searx:8080
+      - searxng
+    command: -listen 0.0.0.0:4040 -api 0.0.0.0:4041 -target searxng:8080
     volumes:
       - ./rules.json:/etc/filtron/rules.json:rw
     read_only: true
     cap_drop:
       - ALL
 
-  searx:
-    container_name: searx
-    image: searx/searx:latest
+  searxng:
+    container_name: searxng
+    image: searxng/searxng:latest
     restart: always
     networks:
-      - searx
-    command: ${SEARX_COMMAND:-}
+      - searxng
+    command: ${SEARXNG_COMMAND:-}
     volumes:
       - ./searx:/etc/searx:rw
     environment:
       - BIND_ADDRESS=0.0.0.0:8080
-      - BASE_URL=https://${SEARX_HOSTNAME:-localhost}/
-      - MORTY_URL=https://${SEARX_HOSTNAME:-localhost}/morty/
+      - BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
+      - MORTY_URL=https://${SEARXNG_HOSTNAME:-localhost}/morty/
       - MORTY_KEY=${MORTY_KEY}
     cap_drop:
       - ALL
@@ -65,7 +65,7 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
     networks:
-      - searx
+      - searxng
     command: -timeout 6 -ipv6
     environment:
       - MORTY_KEY=${MORTY_KEY}
@@ -77,7 +77,7 @@ services:
       - ALL
 
 networks:
-  searx:
+  searxng:
     ipam:
       driver: default
 
