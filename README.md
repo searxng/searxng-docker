@@ -7,7 +7,7 @@ Create a new SearXNG  instance in five minutes using Docker
 | Name | Description | Docker image | Dockerfile |
 | -- | -- | -- | -- |
 | [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [caddy/caddy:2-alpine](https://hub.docker.com/_/caddy) | [Dockerfile](https://github.com/caddyserver/caddy-docker) |
-| [Filtron](https://github.com/dalf/filtron) |  Filtering reverse HTTP proxy, bot and abuse protection | [dalf/filtron:latest](https://hub.docker.com/r/dalf/filtron) | See [asciimoo/filtron#4](https://github.com/asciimoo/filtron/pull/4) |
+| [Filtron](https://github.com/searxng/filtron) |  Filtering reverse HTTP proxy, bot and abuse protection | [dalf/filtron:latest](https://hub.docker.com/r/dalf/filtron) | See [asciimoo/filtron#4](https://github.com/asciimoo/filtron/pull/4) |
 | [SearXNG](https://github.com/searxng/searxng) | SearXNG by itself | [searxng/searxng:latest](https://hub.docker.com/r/searxng/searxng) | [Dockerfile](https://github.com/searxng/searxng/blob/master/Dockerfile) |
 | [Morty](https://github.com/dalf/morty) | Privacy aware web content sanitizer proxy as a service. | [dalf/morty:latest](https://hub.docker.com/r/dalf/morty) | [Dockerfile](https://github.com/dalf/morty/blob/master/Dockerfile) |
 
@@ -60,7 +60,7 @@ Check the content of [```update.sh```](https://github.com/searxng/searxng-docker
 
 ## Access to the Filtron API
 
-The [Filtron API](https://github.com/dalf/filtron#api) is available on ```http://localhost:4041```
+The [Filtron API](https://github.com/searxng/filtron#api) is available on ```http://localhost:4041```
 
 For example, to display the loaded rules:
 ```
