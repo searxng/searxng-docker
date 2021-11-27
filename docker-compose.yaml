@@ -44,7 +44,7 @@ services:
       - searxng
     command: ${SEARXNG_COMMAND:-}
     volumes:
-      - ./searx:/etc/searx:rw
+      - ./searxng:/etc/searxng:rw
     environment:
       - BIND_ADDRESS=0.0.0.0:8080
       - BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
