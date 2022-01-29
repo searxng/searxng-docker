@@ -48,7 +48,7 @@ It is possible to the [extend feature](https://docs.docker.com/compose/extends/)
 - stop the service : ```systemctl stop searxng-docker.service```
 - create a new docker-compose-extend.yaml, check with ```start.sh```
 - update searxng-docker.service (see SEARXNG_DOCKERCOMPOSEFILE)
-- restart the servie  : ```systemctl restart searxng-docker.service```
+- restart the service : ```systemctl restart searxng-docker.service```
 
 ## Multi Architecture Docker images
 
