@@ -13,24 +13,24 @@ Create a new SearXNG  instance in five minutes using Docker
 
 ## How to use it
 - [Install docker](https://docs.docker.com/install/)
-- [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0).
+- [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0)
 - only on MacOSX: ```brew install coreutils``` to install ```greadlink```
-- Get searxng-docker
-```sh
-cd /usr/local
-git clone https://github.com/searxng/searxng-docker.git
-cd searxng-docker
-```
+- Get searxng-docker:
+  ```sh
+  cd /usr/local
+  git clone https://github.com/searxng/searxng-docker.git
+  cd searxng-docker
+  ```
 - Generate MORTY_KEY ```sed -i "s|ReplaceWithARealKey\!|$(openssl rand -base64 33)|g" .env```
 - Edit the other settings in [.env](https://github.com/searxng/searxng-docker/blob/master/.env) file according to your need
-- Check everything is working: ```./start.sh```,
+- Check everything is working: ```./start.sh```
 - ```cp searxng-docker.service.template searxng-docker.service```
 - edit the content of ```WorkingDirectory``` in the ```searxng-docker.service``` file (only if the installation path is different from /usr/local/searxng-docker)
-- Install the systemd unit :
-```sh
-systemctl enable $(pwd)/searxng-docker.service
-systemctl start searxng-docker.service
-```
+- Install the systemd unit:
+  ```sh
+  systemctl enable $(pwd)/searxng-docker.service
+  systemctl start searxng-docker.service
+  ```
 
 ## Note on the image proxy feature
 
@@ -38,17 +38,17 @@ The SearXNG image proxy is activated by default using [Morty](https://github.com
 
 The default [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) allow the browser to access to {SEARXNG_HOSTNAME} and ```https://*.tile.openstreetmap.org;```.
 
-If some users wants to disable the image proxy, you have to modify [./Caddyfile](https://github.com/searxng/searxng-docker/blob/master/Caddyfile). Replace the ```img-src 'self' data: https://*.tile.openstreetmap.org;``` by ```img-src * data:;```
+If some users wants to disable the image proxy, you have to modify [./Caddyfile](https://github.com/searxng/searxng-docker/blob/master/Caddyfile). Replace the ```img-src 'self' data: https://*.tile.openstreetmap.org;``` by ```img-src * data:;```.
 
 ## Custom docker-compose.yaml
 
 Do not modify docker-compose.yaml otherwise you won't be able to update easily from the git repository.
 
-It is possible to the [extend feature](https://docs.docker.com/compose/extends/) of docker-compose :
-- stop the service : ```systemctl stop searxng-docker.service```
+It is possible to use the [extend feature](https://docs.docker.com/compose/extends/) of docker-compose:
+- stop the service: ```systemctl stop searxng-docker.service```
 - create a new docker-compose-extend.yaml, check with ```start.sh```
 - update searxng-docker.service (see SEARXNG_DOCKERCOMPOSEFILE)
-- restart the service : ```systemctl restart searxng-docker.service```
+- restart the service: ```systemctl restart searxng-docker.service```
 
 ## Multi Architecture Docker images
 
@@ -56,11 +56,11 @@ For now only the amd64 platform is supported.
 
 ## How to update ?
 
-Check the content of [```update.sh```](https://github.com/searxng/searxng-docker/blob/master/update.sh)
+Check the content of [```update.sh```](https://github.com/searxng/searxng-docker/blob/master/update.sh).
 
 ## Access to the Filtron API
 
-The [Filtron API](https://github.com/dalf/filtron#api) is available on ```http://localhost:4041```
+The [Filtron API](https://github.com/dalf/filtron#api) is available on ```http://localhost:4041```.
 
 For example, to display the loaded rules:
 ```
