@@ -11,23 +11,24 @@
 
   @api {
         path /config
-	path /status
+        path /status
   }
 
   @static {
         path /static/*
   }
 
+  @imageproxy {
+        path /image_proxy
+  }
+
+  @notimageproxy {
+        not path /image_proxy
+  }
+
+
   @notstatic {
         not path /static/*
-  }
-
-  @morty {
-        path /morty/*
-  }
-
-  @notmorty {
-        not path /morty/*
   }
 
   header {
@@ -67,8 +68,8 @@
   # Cache
   header @static {
         # Cache
-	Cache-Control "public, max-age=31536000"
-	defer
+        Cache-Control "public, max-age=31536000"
+        defer
   }
 
   header @notstatic {
@@ -78,24 +79,19 @@
   }
 
   # CSP (see http://content-security-policy.com/ )
-  header @morty {
-	Content-Security-Policy "default-src 'none'; style-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; img-src 'self' data:; font-src 'self'; frame-src 'self'"
+  header @imageproxy {
+        Content-Security-Policy "default-src 'none'; img-src 'self' data:"
   }
 
-  header @notmorty {
+  header @notimageproxy {
         Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
   }
 
-  # Morty
-  handle @morty {
-        reverse_proxy localhost:3000
-  }
-
-  # Filtron
+  # Searx
   handle {
         encode zstd gzip
 
-        reverse_proxy localhost:4040 {
+        reverse_proxy localhost:8080 {
                header_up X-Forwarded-Port {http.request.port}
                header_up X-Forwarded-Proto {http.request.scheme}
                header_up X-Forwarded-TlsProto {tls_protocol}
