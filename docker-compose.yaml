@@ -34,21 +34,18 @@ services:
       - SETUID
       - DAC_OVERRIDE
 
-  searx:
-    container_name: searx
-    image: searxng/searxng
+  searxng:
+    container_name: searxng
+    image: searxng/searxng:latest
     restart: always
     networks:
       - searxng
-    command: ${SEARX_COMMAND:-}
     ports:
      - "127.0.0.1:8080:8080"
     volumes:
-      - ./searxng:/etc/searx:rw
+      - ./searxng:/etc/searxng:rw
     environment:
-      - BIND_ADDRESS=0.0.0.0:8080
-      - BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
-      - SEARXNG_SECRET=${SEARXNG_SECRET}
+      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
     cap_drop:
       - ALL
     cap_add:
@@ -56,7 +53,11 @@ services:
       - SETGID
       - SETUID
       - DAC_OVERRIDE
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
 networks:
   searxng:
     ipam:

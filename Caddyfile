@@ -11,11 +11,17 @@
 
   @api {
         path /config
-        path /status
+        path /healthz
+        path /stats/errors
+        path /stats/checker
   }
 
   @static {
         path /static/*
+  }
+
+  @notstatic {
+        not path /static/*
   }
 
   @imageproxy {
@@ -24,11 +30,6 @@
 
   @notimageproxy {
         not path /image_proxy
-  }
-
-
-  @notstatic {
-        not path /static/*
   }
 
   header {
@@ -41,11 +42,8 @@
         # Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
         X-Content-Type-Options "nosniff"
 
-        # Disallow the site to be rendered within a frame (clickjacking protection)
-        X-Frame-Options "SAMEORIGIN"
-
         # Disable some features
-        Permissions-Policy "accelerometer=();ambient-light-sensor=(); autoplay=();camera=();encrypted-media=();focus-without-user-activation=(); geolocation=();gyroscope=();magnetometer=();microphone=();midi=();payment=();picture-in-picture=(); speaker=();sync-xhr=();usb=();vr=()"
+        Permissions-Policy "accelerometer=(),ambient-light-sensor=(),autoplay=(),camera=(),encrypted-media=(),focus-without-user-activation=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),midi=(),payment=(),picture-in-picture=(),speaker=(),sync-xhr=(),usb=(),vr=()"
 
         # Disable some features (legacy)
         Feature-Policy "accelerometer 'none';ambient-light-sensor 'none'; autoplay 'none';camera 'none';encrypted-media 'none';focus-without-user-activation 'none'; geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';payment 'none';picture-in-picture 'none'; speaker 'none';sync-xhr 'none';usb 'none';vr 'none'"
@@ -87,16 +85,13 @@
         Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
   }
 
-  # Searx
+  # SearXNG
   handle {
         encode zstd gzip
 
         reverse_proxy localhost:8080 {
                header_up X-Forwarded-Port {http.request.port}
                header_up X-Forwarded-Proto {http.request.scheme}
-               header_up X-Forwarded-TlsProto {tls_protocol}
-               header_up X-Forwarded-TlsCipher {tls_cipher}
-               header_up X-Forwarded-HttpsProto {proto}
         }
   }
 
