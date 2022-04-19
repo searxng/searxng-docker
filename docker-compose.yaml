@@ -5,14 +5,13 @@ services:
   caddy:
     container_name: caddy
     image: caddy:2-alpine
-    restart: on-failure
     network_mode: host
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data:rw
       - caddy-config:/config:rw
     environment:
-      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-localhost}
+      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost:80}
       - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
     cap_drop:
       - ALL
@@ -20,21 +19,20 @@ services:
       - NET_BIND_SERVICE
       - DAC_OVERRIDE
 
-  filtron:
-    container_name: filtron
-    image: dalf/filtron
-    restart: always
-    ports:
-      - "127.0.0.1:4040:4040"
-      - "127.0.0.1:4041:4041"
+  redis:
+    container_name: redis
+    image: "redis:alpine"
+    command: redis-server --save "" --appendonly "no"
     networks:
       - searxng
-    command: -listen 0.0.0.0:4040 -api 0.0.0.0:4041 -target searxng:8080
-    volumes:
-      - ./rules.json:/etc/filtron/rules.json:rw
-    read_only: true
+    tmpfs:
+      - /var/lib/redis
     cap_drop:
       - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
 
   searxng:
     container_name: searxng
@@ -42,14 +40,12 @@ services:
     restart: always
     networks:
       - searxng
-    command: ${SEARXNG_COMMAND:-}
+    ports:
+     - "127.0.0.1:8080:8080"
     volumes:
       - ./searxng:/etc/searxng:rw
     environment:
-      - BIND_ADDRESS=0.0.0.0:8080
-      - BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
-      - MORTY_URL=https://${SEARXNG_HOSTNAME:-localhost}/morty/
-      - MORTY_KEY=${MORTY_KEY}
+      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
     cap_drop:
       - ALL
     cap_add:
@@ -57,25 +53,11 @@ services:
       - SETGID
       - SETUID
       - DAC_OVERRIDE
-
-  morty:
-    container_name: morty
-    image: dalf/morty
-    restart: always
-    ports:
-      - "127.0.0.1:3000:3000"
-    networks:
-      - searxng
-    command: -timeout 6 -ipv6
-    environment:
-      - MORTY_KEY=${MORTY_KEY}
-      - MORTY_ADDRESS=0.0.0.0:3000
     logging:
-      driver: none
-    read_only: true
-    cap_drop:
-      - ALL
-
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
 networks:
   searxng:
     ipam:
