@@ -4,13 +4,11 @@ Requires=docker.service
 After=docker.service
 
 [Service]
-Restart=always
+Restart=on-failure
 
-Environment=SEARXNG_DIR=/usr/local/searxng-docker
-Environment=SEARXNG_DOCKERCOMPOSEFILE=docker-compose.yaml
-
-ExecStart=/bin/sh -c "${SEARXNG_DIR}/start.sh"
-ExecStop=/bin/sh -c "${SEARXNG_DIR}/stop.sh"
+WorkingDirectory=/usr/local/searxng-docker
+ExecStart=/usr/local/bin/docker-compose up --remove-orphans
+ExecStop=/usr/local/bin/docker-compose down
 
 [Install]
 WantedBy=multi-user.target
