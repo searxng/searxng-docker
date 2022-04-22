@@ -13,7 +13,6 @@ Create a new SearXNG  instance in five minutes using Docker
 ## How to use it
 - [Install docker](https://docs.docker.com/install/)
 - [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0)
-- only on MacOSX: ```brew install coreutils``` to install ```greadlink```
 - Get searxng-docker
   ```sh
   cd /usr/local
@@ -61,7 +60,3 @@ Supported architecture:
 - amd64
 - arm64
 - arm/v7
-
-## How to update ?
-
-Check the content of [```update.sh```](https://github.com/searxng/searxng-docker/blob/master/update.sh)

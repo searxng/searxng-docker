@@ -37,7 +37,6 @@ services:
   searxng:
     container_name: searxng
     image: searxng/searxng:latest
-    restart: always
     networks:
       - searxng
     ports:
