@@ -23,6 +23,7 @@ Create a new SearXNG  instance in five minutes using Docker
 - Generate the secret key ```sed -i "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng/settings.yml```
 - Edit the [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) file according to your need
 - Check everything is working: ```docker-compose up```
+- Run SearXNG in the background: ```docker-compose up -d```
 
 ### Start SearXNG with systemd
 
@@ -44,19 +45,23 @@ The default [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/W
 
 If some users wants to disable the image proxy, you have to modify [./Caddyfile](https://github.com/searxng/searxng-docker/blob/master/Caddyfile). Replace the ```img-src 'self' data: https://*.tile.openstreetmap.org;``` by ```img-src * data:;```.
 
-## Custom docker-compose.yaml
-
-Do not modify docker-compose.yaml otherwise you won't be able to update easily from the git repository.
-
-It is possible to use the [extend feature](https://docs.docker.com/compose/extends/) of docker-compose:
-- stop the service: ```systemctl stop searxng-docker.service```
-- create a new docker-compose-extend.yaml, check with ```start.sh```
-- update searxng-docker.service (see SEARXNG_DOCKERCOMPOSEFILE)
-- restart the service: ```systemctl restart searxng-docker.service```
-
 ## Multi Architecture Docker images
 
 Supported architecture:
 - amd64
 - arm64
 - arm/v7
+
+## How to update ?
+
+To update the SearXNG stack:
+
+```sh
+docker-compose pull
+docker-compose down
+docker-compose up
+```
+
+To update this `docker-compose.yml` file:
+
+Check out the newest version on github: [searxng/searxng-docker](https://github.com/searxng/searxng-docker).
