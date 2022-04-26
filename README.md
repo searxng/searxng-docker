@@ -13,7 +13,6 @@ Create a new SearXNG  instance in five minutes using Docker
 ## How to use it
 - [Install docker](https://docs.docker.com/install/)
 - [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0)
-- only on MacOSX: ```brew install coreutils``` to install ```greadlink```
 - Get searxng-docker
   ```sh
   cd /usr/local
@@ -23,7 +22,13 @@ Create a new SearXNG  instance in five minutes using Docker
 - Edit the [.env](https://github.com/searxng/searxng-docker/blob/master/.env) file to set the hostname and an email
 - Generate the secret key ```sed -i "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng/settings.yml```
 - Edit the [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) file according to your need
-- Check everything is working: ```./start.sh```
+- Check everything is working: ```docker-compose up```
+- Run SearXNG in the background: ```docker-compose up -d```
+
+### Start SearXNG with systemd
+
+You can skip this step if you don't use systemd.
+
 - ```cp searxng-docker.service.template searxng-docker.service```
 - edit the content of ```WorkingDirectory``` in the ```searxng-docker.service``` file (only if the installation path is different from /usr/local/searxng-docker)
 - Install the systemd unit:
@@ -40,16 +45,6 @@ The default [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/W
 
 If some users wants to disable the image proxy, you have to modify [./Caddyfile](https://github.com/searxng/searxng-docker/blob/master/Caddyfile). Replace the ```img-src 'self' data: https://*.tile.openstreetmap.org;``` by ```img-src * data:;```.
 
-## Custom docker-compose.yaml
-
-Do not modify docker-compose.yaml otherwise you won't be able to update easily from the git repository.
-
-It is possible to use the [extend feature](https://docs.docker.com/compose/extends/) of docker-compose:
-- stop the service: ```systemctl stop searxng-docker.service```
-- create a new docker-compose-extend.yaml, check with ```start.sh```
-- update searxng-docker.service (see SEARXNG_DOCKERCOMPOSEFILE)
-- restart the service: ```systemctl restart searxng-docker.service```
-
 ## Multi Architecture Docker images
 
 Supported architecture:
@@ -59,4 +54,14 @@ Supported architecture:
 
 ## How to update ?
 
-Check the content of [```update.sh```](https://github.com/searxng/searxng-docker/blob/master/update.sh)
+To update the SearXNG stack:
+
+```sh
+docker-compose pull
+docker-compose down
+docker-compose up
+```
+
+To update this `docker-compose.yml` file:
+
+Check out the newest version on github: [searxng/searxng-docker](https://github.com/searxng/searxng-docker).
