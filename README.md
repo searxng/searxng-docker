@@ -25,6 +25,14 @@ Create a new SearXNG  instance in five minutes using Docker
 - Check everything is working: ```docker-compose up```
 - Run SearXNG in the background: ```docker-compose up -d```
 
+## How to access the logs
+To access the logs from all the containers use: `docker-compose logs -f`.
+
+To access the logs of one specific container:
+- Caddy: `docker-compose logs -f caddy`
+- SearXNG: `docker-compose logs -f searxng`
+- Redis: `docker-compose logs -f redis`
+
 ### Start SearXNG with systemd
 
 You can skip this step if you don't use systemd.
