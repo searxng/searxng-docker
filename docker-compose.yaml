@@ -36,7 +36,7 @@ services:
 
   searxng:
     container_name: searxng
-    image: searxng/searxng:latest
+    image: thebunyip/bunyipsearx:2.0
     networks:
       - searxng
     ports:
