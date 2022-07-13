@@ -1,5 +1,7 @@
 # searxng-docker
 
+![](logo_searx_a_n.png)
+
 Create a new SearXNG  instance in five minutes using Docker
 
 ## What is included ?
