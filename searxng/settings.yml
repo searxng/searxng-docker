@@ -1,11 +1,42 @@
-# see https://docs.searxng.org/admin/engines/settings.html#use-default-settings
-use_default_settings: true
 server:
-  # base_url is defined in the SEARXNG_BASE_URL environment variable, see .env and docker-compose.yml
-  secret_key: "ultrasecretkey"  # change this!
-  limiter: true  # can be disabled for a private instance
+  secret_key: "ultrasecretkey"  # change this when running yourself
+  limiter: true
   image_proxy: true
+  request: "GET"
+  default_http_headers:
+      X-Content-Type-Options : nosniff
+      X-XSS-Protection : 1; mode=block
+      X-Download-Options : noopen
+      X-Robots-Tag : noindex, nofollow
+      Referrer-Policy : no-referrer
+general:
+  debug: false
+  instance_name:  "Pyxele"
+  privacypolicy_url: false
+  donation_url: false
+  contact_url: false
+  enable_metrics: false
+search:
+  safe_search: 0
+  autocomplete: "google"
+  default_lang: ""
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 120
 ui:
   static_use_hash: true
+  default_locale: ""
+  query_in_title: false
+  infinite_scroll: false
+  center_alignment: false
+  cache_url: https://web.archive.org/web/
+  default_theme: simple
+  theme_args:
+    simple_style: auto
+outgoing:
+  request_timeout: 2.0
+  max_request_timeout: 10.0
+  pool_connections: 100
+  pool_maxsize: 10
+  enable_http2: true
 redis:
   url: redis://redis:6379/0
