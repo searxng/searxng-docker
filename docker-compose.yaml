@@ -17,7 +17,6 @@ services:
       - ALL
     cap_add:
       - NET_BIND_SERVICE
-      - DAC_OVERRIDE
 
   redis:
     container_name: redis
@@ -51,7 +50,6 @@ services:
       - CHOWN
       - SETGID
       - SETUID
-      - DAC_OVERRIDE
     logging:
       driver: "json-file"
       options:
