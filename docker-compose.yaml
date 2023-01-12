@@ -32,6 +32,10 @@ services:
       - SETGID
       - SETUID
       - DAC_OVERRIDE
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 1m
+      timeout: 5s
 
   searxng:
     container_name: searxng
@@ -55,6 +59,11 @@ services:
       options:
         max-size: "1m"
         max-file: "1"
+    healthcheck:
+      test: ["CMD", "wget" ,"--no-verbose", "--tries=1", "--spider", "http://localhost:8080/info/en/about"]
+      interval: 2m
+      timeout: 5s
+
 networks:
   searxng:
     ipam:
