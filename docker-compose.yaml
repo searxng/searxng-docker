@@ -42,6 +42,18 @@ services:
      - "127.0.0.1:8080:8080"
     volumes:
       - ./searxng:/etc/searxng:rw
+      - ./custom/LotusIcon.svg:/usr/local/searxng/searx/static/themes/simple/img/favicon.svg
+      - ./custom/LotusIcon.svg.gz:/usr/local/searxng/searx/static/themes/simple/img/favicon.svg.gz
+      - ./custom/LotusIcon.svg.br:/usr/local/searxng/searx/static/themes/simple/img/favicon.svg.br
+      - ./custom/LotusIconL.svg:/usr/local/searxng/searx/static/themes/simple/img/searxng.svg
+      - ./custom/LotusIcon.svg.gz:/usr/local/searxng/searx/static/themes/simple/img/searxng.svg.gz
+      - ./custom/LotusIcon.svg.br:/usr/local/searxng/searx/static/themes/simple/img/searxng.svg.br
+      - ./custom/LotusIcon.svg:/usr/local/searxng/src/brand/searxng.svg
+      - ./custom/LotusIcon.svg:/usr/local/searxng/src/brand/searxng-wordmark.svg
+      - ./custom/LotusIcon.svg:/usr/local/searxng/searx/templates/simple/searxng-wordmark.min.svg
+      - ./custom/LotusIcon.png:/usr/local/searxng/searx/static/themes/simple/img/favicon.png
+      - ./custom/LotusIcon.png:/usr/local/searxng/searx/static/themes/simple/img/searxng.png
+      - ./custom/base.html:/usr/local/searxng/searx/template/simple/base.html
     environment:
       - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
     cap_drop:
