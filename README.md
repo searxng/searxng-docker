@@ -1,39 +1,39 @@
-# searxng-docker
+# fufusoup-docker
 
-Create a new SearXNG  instance in five minutes using Docker
+Create a new Fufusoup  instance in five minutes using Docker
 
 ## What is included ?
 
 | Name | Description | Docker image | Dockerfile |
 | -- | -- | -- | -- |
 | [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [caddy/caddy:2-alpine](https://hub.docker.com/_/caddy) | [Dockerfile](https://github.com/caddyserver/caddy-docker) |
-| [SearXNG](https://github.com/searxng/searxng) | SearXNG by itself | [searxng/searxng:latest](https://hub.docker.com/r/searxng/searxng) | [Dockerfile](https://github.com/searxng/searxng/blob/master/Dockerfile) |
+| [Fufusoup](https://github.com/mkmtech7/fufusoup) | Fufusoup by itself | [mkmtechnology/fufusoup:1.0](https://hub.docker.com/repository/docker/mkmtechnology/fufusoup) | [Dockerfile](https://github.com/mkmtech7/fufusoup/blob/master/Dockerfile) |
 | [Redis](https://github.com/redis/redis) | In-memory database | [redis:alpine](https://hub.docker.com/_/redis) | [Dockerfile-alpine.template](https://github.com/docker-library/redis/blob/master/Dockerfile-alpine.template) |
 
 ## How to use it
 - [Install docker](https://docs.docker.com/install/)
 - [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0)
-- Get searxng-docker
+- Get fufusoup-docker
   ```sh
   cd /usr/local
-  git clone https://github.com/searxng/searxng-docker.git
+  git clone https://github.com/mkmtech7/fufusoup-docker
   cd searxng-docker
   ```
-- Edit the [.env](https://github.com/searxng/searxng-docker/blob/master/.env) file to set the hostname and an email
+- Edit the [.env](https://github.com/mkmtech7/fufusoup-docker/blob/master/.env) file to set the hostname and an email
 - Generate the secret key ```sed -i "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng/settings.yml```
-- Edit the [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) file according to your need
+- Edit the [searxng/settings.yml](https://github.com/mkmtech7/fufusoup-docker/blob/master/searxng/settings.yml) file according to your need
 - Check everything is working: ```docker-compose up```
-- Run SearXNG in the background: ```docker-compose up -d```
+- Run Fufusoup in the background: ```docker-compose up -d```
 
 ## How to access the logs
 To access the logs from all the containers use: `docker-compose logs -f`.
 
 To access the logs of one specific container:
 - Caddy: `docker-compose logs -f caddy`
-- SearXNG: `docker-compose logs -f searxng`
+- Fufusoup: `docker-compose logs -f fufusoup`
 - Redis: `docker-compose logs -f redis`
 
-### Start SearXNG with systemd
+### Start Fufusoup with systemd
 
 You can skip this step if you don't use systemd.
 
@@ -47,7 +47,7 @@ You can skip this step if you don't use systemd.
 
 ## Note on the image proxy feature
 
-The SearXNG image proxy is activated by default.
+The Fufusoup image proxy is activated by default.
 
 The default [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) allow the browser to access to ```${SEARXNG_HOSTNAME}``` and ```https://*.tile.openstreetmap.org;```.
 
@@ -72,4 +72,4 @@ docker-compose up
 
 To update this `docker-compose.yml` file:
 
-Check out the newest version on github: [searxng/searxng-docker](https://github.com/searxng/searxng-docker).
+Check out the newest version on github: [fufusoup/fufusoup-docker](https://github.com/searxng/searxng-docker).
