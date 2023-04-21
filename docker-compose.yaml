@@ -35,7 +35,7 @@ services:
 
   searxng:
     container_name: searxng
-    image: searxng/searxng:latest
+    image: mkmtechnology/fufusoup:1.0
     networks:
       - searxng
     ports:
