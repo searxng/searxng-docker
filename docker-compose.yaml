@@ -11,8 +11,8 @@ services:
       - caddy-data:/data:rw
       - caddy-config:/config:rw
     environment:
-      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost:80}
-      - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
+      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-https://search.thebunyip.uk}
+      - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-aussie.azz@gmail.com}
     cap_drop:
       - ALL
     cap_add:
@@ -35,7 +35,7 @@ services:
 
   searxng:
     container_name: searxng
-    image: thebunyip/bunyipsearx:2.0
+    image: thebunyip/bunyipsearx:2.1
     networks:
       - searxng
     ports:
