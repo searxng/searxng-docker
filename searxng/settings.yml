@@ -1,10 +1,55 @@
 # see https://docs.searxng.org/admin/engines/settings.html#use-default-settings
 use_default_settings: true
+general:
+  # Debug mode, only for development
+  debug: false
+  # displayed name
+  instance_name: "Searxng :: TheBunyip"
+  # record stats
+  enable_metrics: true
+
+brand:
+  new_issue_url: https://github.com/searxng/searxng/issues/new
+  docs_url: https://docs.searxng.org/
+  public_instances: https://search.thebunyip.co.uk/
+  wiki_url: https://github.com/searxng/searxng/wiki
+  issue_url: https://github.com/searxng/searxng/issues
+
+search:
+  # Filter results. 0: None, 1: Moderate, 2: Strict
+  safe_search: 0
+  # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex",
+  # "seznam", "startpage", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
+  # by default.
+  autocomplete: "google"
+  # minimun characters to type before autocompleter starts
+  autocomplete_min: 3
+  # ban time in seconds after engine errors
+  ban_time_on_fail: 5
+  # max ban time in seconds after engine errors
+  max_ban_time_on_fail: 120
+  # remove format to deny access, use lower case.
+  # formats: [html, csv, json, rss]
+  formats:
+    - html
+
 server:
-  # base_url is defined in the SEARXNG_BASE_URL environment variable, see .env and docker-compose.yml
-  secret_key: "ultrasecretkey"  # change this!
-  limiter: true  # can be disabled for a private instance
-  image_proxy: true
+  secret_key: "ab4e132809183fb896d6a436a8bba1b249cb8d5bd646f88a1471f11afe9382fb"  # change this!
+  # Proxying image results through searx
+  image_proxy: false
+  # 1.0 and 1.1 are supported
+  http_protocol_version: "1.1"
+  # POST queries are more secure as they don't show up in history but may cause
+  # problems when using Firefox containers
+  method: "POST"
+  default_http_headers:
+    X-Clacks-Overhead: "GNU Terry Pratchett"
+    X-Content-Type-Options: nosniff
+    X-XSS-Protection: 1; mode=block
+    X-Download-Options: noopen
+    X-Robots-Tag: noindex, nofollow
+    Referrer-Policy: no-referrer
+
 ui:
   static_use_hash: true
 redis:
