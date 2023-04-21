@@ -34,7 +34,7 @@ search:
     - html
 
 server:
-  secret_key: "ab4e132809183fb896d6a436a8bba1b249cb8d5bd646f88a1471f11afe9382fb"  # change this!
+  secret_key: "changeme"  # change this!
   # Proxying image results through searx
   image_proxy: false
   # 1.0 and 1.1 are supported
