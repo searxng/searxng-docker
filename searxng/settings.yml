@@ -5,6 +5,7 @@ server:
   secret_key: "ultrasecretkey"  # change this!
   limiter: true  # can be disabled for a private instance
   image_proxy: true
+  limiter: true
 ui:
   static_use_hash: true
 redis:
