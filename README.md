@@ -65,16 +65,14 @@ Supported architecture:
 To update the SearXNG stack:
 
 ```sh
+git pull
 docker compose pull
 docker compose up -d
 ```
 
 Or the old way (with the old docker-compose version):
 ```sh
+git pull
 docker-compose pull
 docker-compose up -d
 ```
-
-To update this `docker-compose.yml` file:
-
-Check out the newest version on github: [searxng/searxng-docker](https://github.com/searxng/searxng-docker).
