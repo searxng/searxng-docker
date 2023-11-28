@@ -1,7 +1,6 @@
-version: '3.7'
+version: "3.7"
 
 services:
-
   caddy:
     container_name: caddy
     image: caddy:2-alpine
@@ -20,12 +19,12 @@ services:
 
   redis:
     container_name: redis
-    image: "redis:alpine"
-    command: redis-server --save "" --appendonly "no"
+    image: docker.io/library/redis:alpine
+    command: redis-server --save 30 1 --loglevel warning
     networks:
       - searxng
-    tmpfs:
-      - /var/lib/redis
+    volumes:
+      - redis-data:/data
     cap_drop:
       - ALL
     cap_add:
@@ -39,7 +38,7 @@ services:
     networks:
       - searxng
     ports:
-     - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8080:8080"
     volumes:
       - ./searxng:/etc/searxng:rw
     environment:
@@ -55,6 +54,7 @@ services:
       options:
         max-size: "1m"
         max-file: "1"
+
 networks:
   searxng:
     ipam:
@@ -63,3 +63,4 @@ networks:
 volumes:
   caddy-data:
   caddy-config:
+  redis-data:
