@@ -28,7 +28,7 @@ Create a new SearXNG  instance in five minutes using Docker
 > If you use an older version of docker desktop (`< 3.6.0`), you may have to install Docker Compose v1.
 > Accordingly, you should modify the commands in this documentation to suit Docker Compose v1. For instance, change 'docker compose up' to 'docker-compose up'.
 >
-> [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0)
+> [Install the docker-compose plugin](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin) (be sure that docker-compose version is at least 1.9.0)
 
 ## How to access the logs
 To access the logs from all the containers use: `docker compose logs -f`.
