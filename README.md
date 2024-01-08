@@ -12,7 +12,6 @@ Create a new SearXNG  instance in five minutes using Docker
 
 ## How to use it
 - [Install docker](https://docs.docker.com/install/)
-- [Install docker-compose](https://docs.docker.com/compose/install/) (be sure that docker-compose version is at least 1.9.0)
 - Get searxng-docker
   ```sh
   cd /usr/local
@@ -20,18 +19,24 @@ Create a new SearXNG  instance in five minutes using Docker
   cd searxng-docker
   ```
 - Edit the [.env](https://github.com/searxng/searxng-docker/blob/master/.env) file to set the hostname and an email
-- Generate the secret key ```sed -i "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng/settings.yml```
+- Generate the secret key `sed -i "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng/settings.yml`
 - Edit the [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) file according to your need
-- Check everything is working: ```docker-compose up```
-- Run SearXNG in the background: ```docker-compose up -d```
+- Check everything is working: `docker compose up`
+- Run SearXNG in the background: `docker compose up -d`
+
+> [!WARNING]  
+> If you use an older version of docker desktop (`< 3.6.0`), you may have to install Docker Compose v1.
+> Accordingly, you should modify the commands in this documentation to suit Docker Compose v1. For instance, change 'docker compose up' to 'docker-compose up'.
+>
+> [Install the docker-compose plugin](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin) (be sure that docker-compose version is at least 1.9.0)
 
 ## How to access the logs
-To access the logs from all the containers use: `docker-compose logs -f`.
+To access the logs from all the containers use: `docker compose logs -f`.
 
 To access the logs of one specific container:
-- Caddy: `docker-compose logs -f caddy`
-- SearXNG: `docker-compose logs -f searxng`
-- Redis: `docker-compose logs -f redis`
+- Caddy: `docker compose logs -f caddy`
+- SearXNG: `docker compose logs -f searxng`
+- Redis: `docker compose logs -f redis`
 
 ### Start SearXNG with systemd
 
