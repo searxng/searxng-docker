@@ -34,7 +34,7 @@ services:
 
   searxng:
     container_name: searxng
-    image: searxng/searxng:latest
+    image: mkmzone/kin.zone:1.0
     networks:
       - searxng
     ports:
