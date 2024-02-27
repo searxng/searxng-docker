@@ -3,7 +3,7 @@ version: "3.7"
 services:
   caddy:
     container_name: caddy
-    image: caddy:2-alpine
+    image: docker.io/library/caddy:2-alpine
     network_mode: host
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
@@ -34,7 +34,7 @@ services:
 
   searxng:
     container_name: searxng
-    image: searxng/searxng:latest
+    image: docker.io/searxng/searxng:latest
     networks:
       - searxng
     ports:
