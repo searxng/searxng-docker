@@ -40,11 +40,12 @@ services:
   valkey:
     container_name: valkey
     image: cgr.dev/chainguard/valkey:latest
-    command: valkey-server --save 30 1
+    command: --save 30 1
+    user: 0:0
     networks:
       - searxng
     volumes:
-      - valkey-data:/data
+      - redis-data:/data
     security_opt:
       - no-new-privileges:true
     logging:
@@ -59,4 +60,4 @@ networks:
 volumes:
   caddy-data:
   caddy-config:
-  valkey-data:
+  redis-data:
