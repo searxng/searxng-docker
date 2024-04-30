@@ -22,6 +22,29 @@ services:
         max-size: "1m"
         max-file: "1"
 
+  redis:
+    container_name: redis
+    image: cgr.dev/chainguard/valkey:latest
+    command: --save 30 1
+    user: 0:0
+    networks:
+      - searxng
+    volumes:
+      - redis-data:/data
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "1m"
+        max-file: "1"
+
   searxng:
     container_name: searxng
     image: docker.io/searxng/searxng:latest
@@ -39,29 +62,6 @@ services:
       - CHOWN
       - SETGID
       - SETUID
-    security_opt:
-      - no-new-privileges:true
-    logging:
-      driver: json-file
-      options:
-        max-size: "1m"
-        max-file: "1"
-
-  valkey:
-    container_name: valkey
-    image: cgr.dev/chainguard/valkey:latest
-    command: --save 30 1
-    user: 0:0
-    networks:
-      - searxng
-    volumes:
-      - redis-data:/data
-    cap_drop:
-      - ALL
-    cap_add:
-      - SETGID
-      - SETUID
-      - DAC_OVERRIDE
     security_opt:
       - no-new-privileges:true
     logging:
