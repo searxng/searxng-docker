@@ -10,12 +10,16 @@ services:
     environment:
       - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost:80}
       - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
     security_opt:
       - no-new-privileges:true
     logging:
       driver: json-file
       options:
-        max-size: "5m"
+        max-size: "1m"
         max-file: "1"
 
   searxng:
@@ -29,12 +33,18 @@ services:
       - ./searxng:/etc/searxng:rw
     environment:
       - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
     security_opt:
       - no-new-privileges:true
     logging:
       driver: json-file
       options:
-        max-size: "5m"
+        max-size: "1m"
         max-file: "1"
 
   valkey:
@@ -46,6 +56,12 @@ services:
       - searxng
     volumes:
       - redis-data:/data
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
     security_opt:
       - no-new-privileges:true
     logging:
