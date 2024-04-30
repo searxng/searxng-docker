@@ -5,13 +5,18 @@ services:
     network_mode: host
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-      - caddy-config:/config
+      - caddy-data:/data:rw
+      - caddy-config:/config:rw
     environment:
       - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost:80}
       - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
     security_opt:
       - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "1"
 
   searxng:
     container_name: searxng
@@ -21,11 +26,16 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
-      - ./searxng:/etc/searxng
+      - ./searxng:/etc/searxng:rw
     environment:
       - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
     security_opt:
       - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "1"
 
   valkey:
     container_name: valkey
@@ -34,9 +44,14 @@ services:
     networks:
       - searxng
     volumes:
-      - valkey-data:/data
+      - redis-data:/data
     security_opt:
       - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "1m"
+        max-file: "1"
 
 networks:
   searxng:
@@ -44,4 +59,4 @@ networks:
 volumes:
   caddy-data:
   caddy-config:
-  valkey-data:
+  redis-data:
