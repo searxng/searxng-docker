@@ -44,7 +44,7 @@ services:
     networks:
       - searxng
     volumes:
-      - redis-data:/data
+      - valkey-data:/data
     security_opt:
       - no-new-privileges:true
     logging:
@@ -59,4 +59,4 @@ networks:
 volumes:
   caddy-data:
   caddy-config:
-  redis-data:
+  valkey-data:
