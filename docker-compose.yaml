@@ -25,12 +25,11 @@ services:
   redis:
     container_name: redis
     image: cgr.dev/chainguard/valkey:latest
-    command: --save 30 1
-    user: 0:0
+    command: --save 60 1
     networks:
       - searxng
     volumes:
-      - redis-data:/data
+      - valkey-data:/data
     cap_drop:
       - ALL
     cap_add:
@@ -76,4 +75,4 @@ networks:
 volumes:
   caddy-data:
   caddy-config:
-  redis-data:
+  valkey-data:
