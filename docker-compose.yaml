@@ -14,10 +14,8 @@ services:
       - ALL
     cap_add:
       - NET_BIND_SERVICE
-    security_opt:
-      - no-new-privileges:true
     logging:
-      driver: json-file
+      driver: "json-file"
       options:
         max-size: "1m"
         max-file: "1"
@@ -25,7 +23,7 @@ services:
   redis:
     container_name: redis
     image: cgr.dev/chainguard/valkey:latest
-    command: --save 60 1
+    command: --save 60 1 --loglevel warning
     networks:
       - searxng
     volumes:
@@ -36,10 +34,8 @@ services:
       - SETGID
       - SETUID
       - DAC_OVERRIDE
-    security_opt:
-      - no-new-privileges:true
     logging:
-      driver: json-file
+      driver: "json-file"
       options:
         max-size: "1m"
         max-file: "1"
@@ -61,10 +57,8 @@ services:
       - CHOWN
       - SETGID
       - SETUID
-    security_opt:
-      - no-new-privileges:true
     logging:
-      driver: json-file
+      driver: "json-file"
       options:
         max-size: "1m"
         max-file: "1"
