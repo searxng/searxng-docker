@@ -1,16 +1,17 @@
 # searxng-docker
 
-Create a new SearXNG  instance in five minutes using Docker
+Create a new SearXNG instance in five minutes using Docker
 
 ## What is included ?
 
 | Name | Description | Docker image | Dockerfile |
 | -- | -- | -- | -- |
-| [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [caddy/caddy:2-alpine](https://hub.docker.com/_/caddy) | [Dockerfile](https://github.com/caddyserver/caddy-docker) |
-| [SearXNG](https://github.com/searxng/searxng) | SearXNG by itself | [searxng/searxng:latest](https://hub.docker.com/r/searxng/searxng) | [Dockerfile](https://github.com/searxng/searxng/blob/master/Dockerfile) |
-| [Redis](https://github.com/redis/redis) | In-memory database | [redis:alpine](https://hub.docker.com/_/redis) | [Dockerfile-alpine.template](https://github.com/docker-library/redis/blob/master/Dockerfile-alpine.template) |
+| [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [docker.io/library/caddy:2-alpine](https://hub.docker.com/_/caddy)           | [Dockerfile](https://github.com/caddyserver/caddy-docker/blob/master/Dockerfile.tmpl) |
+| [SearXNG](https://github.com/searxng/searxng) | SearXNG by itself                                              | [docker.io/searxng/searxng:latest](https://hub.docker.com/r/searxng/searxng) | [Dockerfile](https://github.com/searxng/searxng/blob/master/Dockerfile)               |
+| [Valkey](https://github.com/valkey-io/valkey) | In-memory database                                             | [cgr.dev/chainguard/valkey:latest](https://cgr.dev/chainguard/valkey)        | [Valkey-image](https://github.com/chainguard-images/images/tree/main/images/valkey)             |
 
 ## How to use it
+
 - [Install docker](https://docs.docker.com/install/)
 - Get searxng-docker
   ```sh
@@ -31,12 +32,14 @@ Create a new SearXNG  instance in five minutes using Docker
 > [Install the docker-compose plugin](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin) (be sure that docker-compose version is at least 1.9.0)
 
 ## How to access the logs
+
 To access the logs from all the containers use: `docker compose logs -f`.
 
 To access the logs of one specific container:
+
 - Caddy: `docker compose logs -f caddy`
 - SearXNG: `docker compose logs -f searxng`
-- Redis: `docker compose logs -f redis`
+- Valkey: `docker compose logs -f redis`
 
 ### Start SearXNG with systemd
 
@@ -56,11 +59,12 @@ The SearXNG image proxy is activated by default.
 
 The default [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) allow the browser to access to ```${SEARXNG_HOSTNAME}``` and ```https://*.tile.openstreetmap.org;```.
 
-If some users wants to disable the image proxy, you have to modify [./Caddyfile](https://github.com/searxng/searxng-docker/blob/master/Caddyfile). Replace the ```img-src 'self' data: https://*.tile.openstreetmap.org;``` by ```img-src * data:;```.
+If some users want to disable the image proxy, you have to modify [./Caddyfile](https://github.com/searxng/searxng-docker/blob/master/Caddyfile). Replace the ```img-src 'self' data: https://*.tile.openstreetmap.org;``` by ```img-src * data:;```.
 
 ## Multi Architecture Docker images
 
 Supported architecture:
+
 - amd64
 - arm64
 - arm/v7
@@ -76,6 +80,7 @@ docker compose up -d
 ```
 
 Or the old way (with the old docker-compose version):
+
 ```sh
 git pull
 docker-compose pull
