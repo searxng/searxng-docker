@@ -4,10 +4,10 @@ Create a new SearXNG instance in five minutes using Docker
 
 ## What is included ?
 
-| Name                                          | Description                                                    | Docker image                                                                 | Dockerfile                                                                                      |
-|-----------------------------------------------|----------------------------------------------------------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [docker.io/library/caddy:2-alpine](https://hub.docker.com/_/caddy)           | [Dockerfile](https://raw.githubusercontent.com/caddyserver/caddy-docker/master/Dockerfile.tmpl) |
-| [SearXNG](https://github.com/searxng/searxng) | SearXNG by itself                                              | [docker.io/searxng/searxng:latest](https://hub.docker.com/r/searxng/searxng) | [Dockerfile](https://raw.githubusercontent.com/searxng/searxng/master/Dockerfile)               |
+| Name | Description | Docker image | Dockerfile |
+| -- | -- | -- | -- |
+| [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [docker.io/library/caddy:2-alpine](https://hub.docker.com/_/caddy)           | [Dockerfile](https://github.com/caddyserver/caddy-docker/blob/master/Dockerfile.tmpl) |
+| [SearXNG](https://github.com/searxng/searxng) | SearXNG by itself                                              | [docker.io/searxng/searxng:latest](https://hub.docker.com/r/searxng/searxng) | [Dockerfile](https://github.com/searxng/searxng/blob/master/Dockerfile)               |
 | [Valkey](https://github.com/valkey-io/valkey) | In-memory database                                             | [cgr.dev/chainguard/valkey:latest](https://cgr.dev/chainguard/valkey)        | [Valkey-image](https://github.com/chainguard-images/images/tree/main/images/valkey)             |
 
 ## How to use it
@@ -24,6 +24,12 @@ Create a new SearXNG instance in five minutes using Docker
 - Edit the [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) file according to your need
 - Check everything is working: `docker compose up`
 - Run SearXNG in the background: `docker compose up -d`
+
+> [!WARNING]  
+> If you use an older version of docker desktop (`< 3.6.0`), you may have to install Docker Compose v1.
+> Accordingly, you should modify the commands in this documentation to suit Docker Compose v1. For instance, change 'docker compose up' to 'docker-compose up'.
+>
+> [Install the docker-compose plugin](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin) (be sure that docker-compose version is at least 1.9.0)
 
 ## How to access the logs
 
