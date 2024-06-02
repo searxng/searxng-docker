@@ -8,7 +8,7 @@ Create a new SearXNG instance in five minutes using Docker
 | -- | -- | -- | -- |
 | [Caddy](https://github.com/caddyserver/caddy) | Reverse proxy (create a LetsEncrypt certificate automatically) | [docker.io/library/caddy:2-alpine](https://hub.docker.com/_/caddy)           | [Dockerfile](https://github.com/caddyserver/caddy-docker/blob/master/Dockerfile.tmpl) |
 | [SearXNG](https://github.com/searxng/searxng) | SearXNG by itself                                              | [docker.io/searxng/searxng:latest](https://hub.docker.com/r/searxng/searxng) | [Dockerfile](https://github.com/searxng/searxng/blob/master/Dockerfile)               |
-| [Valkey](https://github.com/valkey-io/valkey) | In-memory database                                             | [cgr.dev/chainguard/valkey:latest](https://cgr.dev/chainguard/valkey)        | [Valkey-image](https://github.com/chainguard-images/images/tree/main/images/valkey)             |
+| [Valkey](https://github.com/valkey-io/valkey) | In-memory database                                             | [docker.io/valkey/valkey:7-alpine](https://hub.docker.com/r/valkey/valkey)        | [Dockerfile](https://github.com/valkey-io/valkey-container/blob/mainline/Dockerfile.template)             |
 
 ## How to use it
 
