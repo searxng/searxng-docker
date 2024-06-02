@@ -31,7 +31,7 @@ services:
     networks:
       - searxng
     volumes:
-      - valkey-data:/data
+      - valkey-data2:/data
     cap_drop:
       - ALL
     cap_add:
@@ -74,4 +74,4 @@ networks:
 volumes:
   caddy-data:
   caddy-config:
-  valkey-data:
+  valkey-data2:
