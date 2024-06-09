@@ -67,7 +67,7 @@ Supported architecture:
 
 - amd64
 - arm64
-- arm/v7
+- arm/v7 ([not when using redis](https://github.com/searxng/searxng-docker/issues/239))
 
 ## How to update ?
 
