@@ -10,9 +10,12 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data:rw
       - caddy-config:/config:rw
+      - ${SSL_CERT:-/dev/null}:${SSL_CERT:-/dev/null}:ro
+      - ${SSL_KEY:-/dev/null}:${SSL_KEY:-/dev/null}:ro
     environment:
       - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost:80}
-      - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
+      - SELFSIGNED_TLS=${SSL_CERT} ${SSL_KEY}
+      - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-${SELFSIGNED_TLS:-internal}}
     cap_drop:
       - ALL
     cap_add:

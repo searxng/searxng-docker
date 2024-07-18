@@ -19,7 +19,7 @@ Create a new SearXNG instance in five minutes using Docker
   git clone https://github.com/searxng/searxng-docker.git
   cd searxng-docker
   ```
-- Edit the [.env](https://github.com/searxng/searxng-docker/blob/master/.env) file to set the hostname and an email
+- Edit the [.env](https://github.com/searxng/searxng-docker/blob/master/.env) file to set the hostname and an email. Alternatively self-signed certificates can also be provided.
 - Generate the secret key `sed -i "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng/settings.yml`
 - Edit the [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) file according to your need
 - Check everything is working: `docker compose up`
