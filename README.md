@@ -31,6 +31,15 @@ Create a new SearXNG instance in five minutes using Docker
 >
 > [Install the docker-compose plugin](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin) (be sure that docker-compose version is at least 1.9.0)
 
+> [!NOTE]  
+> Windows users can use the following powershell script to generate the secret key:
+> ```powershell
+> $randomBytes = New-Object byte[] 32
+> (New-Object Security.Cryptography.RNGCryptoServiceProvider).GetBytes($randomBytes)
+> $secretKey = -join ($randomBytes | ForEach-Object { "{0:x2}" -f $_ })
+> (Get-Content searxng/settings.yml) -replace 'ultrasecretkey', $secretKey | Set-Content searxng/settings.yml
+> ```
+
 ## How to access the logs
 
 To access the logs from all the containers use: `docker compose logs -f`.
