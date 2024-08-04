@@ -3,4 +3,4 @@
 searxng-docker.service
 caddy
 srv
-searxng/uwsgi.ini
+# searxng/uwsgi.ini
