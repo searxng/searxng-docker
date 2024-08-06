@@ -67,7 +67,7 @@ header @api {
 route {
 	# Caching
 	header Cache-Control "no-cache, no-store"
-	header @static Cache-Control "max-age=31536000"
+	header @static Cache-Control "public, max-age=31536000"
 
 	# CSP (https://content-security-policy.com)
 	header Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self' https://github.com/searxng/searxng/issues/new; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
