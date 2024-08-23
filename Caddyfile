@@ -24,6 +24,8 @@
 
 tls {$SEARXNG_TLS:internal}
 
+encode zstd gzip
+
 @api {
 	path /config
 	path /healthz
