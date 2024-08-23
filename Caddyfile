@@ -47,7 +47,7 @@ header {
 	X-Content-Type-Options "nosniff"
 
 	# Disable some browser features
-	Permissions-Policy "accelerometer=(),ambient-light-sensor=(),autoplay=(),battery=(),camera=(),cross-origin-isolated=(),display-capture=(self),document-domain=(),encrypted-media=(),execution-while-not-rendered=(),execution-while-out-of-viewport=(),fullscreen=(self),geolocation=(),gyroscope=(),keyboard-map=(self),magnetometer=(),microphone=(),midi=(),navigation-override=(self),payment=(),picture-in-picture=(),publickey-credentials-get=(),screen-wake-lock=(),sync-xhr=(),usb=(),web-share=(),xr-spatial-tracking=()"
+	Permissions-Policy "accelerometer=(),camera=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),payment=(),usb=()"
 
 	# Set referrer policy
 	Referrer-Policy "no-referrer"
