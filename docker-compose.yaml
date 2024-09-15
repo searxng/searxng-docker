@@ -1,8 +1,5 @@
-version: "3.7"
-
 services:
   caddy:
-    container_name: caddy
     image: docker.io/library/caddy:2-alpine
     network_mode: host
     restart: unless-stopped
@@ -24,7 +21,6 @@ services:
         max-file: "1"
 
   redis:
-    container_name: redis
     image: docker.io/valkey/valkey:7-alpine
     command: valkey-server --save 30 1 --loglevel warning
     restart: unless-stopped
@@ -45,7 +41,6 @@ services:
         max-file: "1"
 
   searxng:
-    container_name: searxng
     image: docker.io/searxng/searxng:latest
     restart: unless-stopped
     networks:
@@ -53,7 +48,7 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
-      - ./searxng:/etc/searxng:rw
+      - ./searxng:/etc/searxng
     environment:
       - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
     cap_drop:
