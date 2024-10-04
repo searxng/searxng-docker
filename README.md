@@ -40,6 +40,9 @@ Create a new SearXNG instance in five minutes using Docker
 > (Get-Content searxng/settings.yml) -replace 'ultrasecretkey', $secretKey | Set-Content searxng/settings.yml
 > ```
 
+> [!NOTE]  
+> On the first run, you must remove `cap_drop: - ALL` from the `docker-compose.yaml` file for the `searxng` service to successfully create `/etc/searxng/uwsgi.ini`. This is necessary because the `cap_drop: - ALL` directive removes all capabilities, including those required for the creation of the `uwsgi.ini` file.
+
 ## How to access the logs
 
 To access the logs from all the containers use: `docker compose logs -f`.
