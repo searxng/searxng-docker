@@ -1,99 +1,86 @@
 {
-  admin off
+	admin off
+
+	log {
+		output stderr
+		format filter {
+			# Preserves fist 8 bits from IPv4 and 32 bits from IPv6
+			request>remote_ip ip_mask 8 32
+			request>client_ip ip_mask 8 32
+
+			# Remove identificable information
+			request>remote_port delete
+			request>headers delete
+			request>uri query {
+				delete url
+				delete h
+				delete q
+			}
+		}
+	}
 }
 
-{$SEARXNG_HOSTNAME} {
-  log {
-        output discard
-  }
+{$SEARXNG_HOSTNAME:http://localhost}
 
-  tls {$SEARXNG_TLS}
+tls {$SEARXNG_TLS:internal}
 
-  @api {
-        path /config
-        path /healthz
-        path /stats/errors
-        path /stats/checker
-  }
+encode zstd gzip
 
-  @static {
-        path /static/*
-  }
+@api {
+	path /config
+	path /healthz
+	path /stats/errors
+	path /stats/checker
+}
 
-  @notstatic {
-        not path /static/*
-  }
+@static {
+	path /static/*
+}
 
-  @imageproxy {
-        path /image_proxy
-  }
+@imageproxy {
+	path /image_proxy
+}
 
-  @notimageproxy {
-        not path /image_proxy
-  }
+header {
+	# Force clients to use HTTPS
+	Strict-Transport-Security "max-age=31536000"
 
-  header {
-        # Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
-        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+	# Prevent MIME type sniffing from the declared Content-Type
+	X-Content-Type-Options "nosniff"
 
-        # Enable cross-site filter (XSS) and tell browser to block detected attacks
-        X-XSS-Protection "1; mode=block"
+	# Disable some browser features
+	Permissions-Policy "accelerometer=(),camera=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),payment=(),usb=()"
 
-        # Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
-        X-Content-Type-Options "nosniff"
+	# Set referrer policy
+	Referrer-Policy "no-referrer"
 
-        # Disable some features
-        Permissions-Policy "accelerometer=(),ambient-light-sensor=(),autoplay=(),camera=(),encrypted-media=(),focus-without-user-activation=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),midi=(),payment=(),picture-in-picture=(),speaker=(),sync-xhr=(),usb=(),vr=()"
+	# X-Robots-Tag (comment to allow site indexing)
+	X-Robots-Tag "noindex, noarchive, nofollow"
 
-        # Disable some features (legacy)
-        Feature-Policy "accelerometer 'none';ambient-light-sensor 'none'; autoplay 'none';camera 'none';encrypted-media 'none';focus-without-user-activation 'none'; geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';payment 'none';picture-in-picture 'none'; speaker 'none';sync-xhr 'none';usb 'none';vr 'none'"
+	# Remove "Server" header
+	-Server
+}
 
-        # Referer
-        Referrer-Policy "no-referrer"
+header @api {
+	Access-Control-Allow-Methods "GET, OPTIONS"
+	Access-Control-Allow-Origin "*"
+}
 
-        # X-Robots-Tag
-        X-Robots-Tag "noindex, noarchive, nofollow"
+route {
+	# Caching
+	header Cache-Control "no-cache, no-store"
+	header @static Cache-Control "public, max-age=31536000"
 
-        # Remove Server header
-        -Server
-  }
+	# CSP (https://content-security-policy.com)
+	header Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self' https://github.com/searxng/searxng/issues/new; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
+	header @imageproxy Content-Security-Policy "default-src 'none'; img-src 'self' data:"
+}
 
-  header @api {
-        Access-Control-Allow-Methods "GET, OPTIONS"
-        Access-Control-Allow-Origin  "*"
-  }
+# SearXNG (uWSGI)
+reverse_proxy localhost:8080 {
+	header_up X-Forwarded-Port {http.request.port}
+	header_up X-Real-IP {http.request.remote.host}
 
-  # Cache
-  header @static {
-        # Cache
-        Cache-Control "public, max-age=31536000"
-        defer
-  }
-
-  header @notstatic {
-        # No Cache
-        Cache-Control "no-cache, no-store"
-        Pragma "no-cache"
-  }
-
-  # CSP (see http://content-security-policy.com/ )
-  header @imageproxy {
-        Content-Security-Policy "default-src 'none'; img-src 'self' data:"
-  }
-
-  header @notimageproxy {
-        Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self' https://github.com/searxng/searxng/issues/new; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data: https://*.tile.openstreetmap.org; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.dailymotion.com https://www.deezer.com https://www.mixcloud.com https://w.soundcloud.com https://embed.spotify.com"
-  }
-
-  # SearXNG
-  handle {
-        encode zstd gzip
-
-        reverse_proxy localhost:8080 {
-               header_up X-Forwarded-Port {http.request.port}
-               header_up X-Forwarded-Proto {http.request.scheme}
-               header_up X-Real-IP {remote_host}
-        }
-  }
-
+	# https://github.com/searx/searx-docker/issues/24
+	header_up Connection "close"
 }
