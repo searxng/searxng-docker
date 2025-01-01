@@ -2,7 +2,7 @@
 
 Create a new SearXNG instance in five minutes using Docker
 
-## What is included ?
+## What is included?
 
 | Name | Description | Docker image | Dockerfile |
 | -- | -- | -- | -- |
