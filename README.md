@@ -62,13 +62,17 @@ To access the logs of one specific container:
 
 You can skip this step if you don't use systemd.
 
-- ```cp searxng-docker.service.template searxng-docker.service```
+- Copy the service template file:
+   ```sh
+   cp searxng-docker.service.template searxng-docker.service
+   
 - edit the content of ```WorkingDirectory``` in the ```searxng-docker.service``` file (only if the installation path is different from /usr/local/searxng-docker)
 - Install the systemd unit:
   ```sh
   systemctl enable $(pwd)/searxng-docker.service
   systemctl start searxng-docker.service
   ```
+Note: Ensure the service file path matches your installation directory before enabling it.
 
 ## Note on the image proxy feature
 
