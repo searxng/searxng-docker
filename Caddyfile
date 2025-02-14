@@ -4,7 +4,7 @@
 	log {
 		output stderr
 		format filter {
-			# Preserves fist 8 bits from IPv4 and 32 bits from IPv6
+			# Preserves first 8 bits from IPv4 and 32 bits from IPv6
 			request>remote_ip ip_mask 8 32
 			request>client_ip ip_mask 8 32
 
