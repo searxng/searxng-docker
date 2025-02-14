@@ -11,8 +11,7 @@ services:
       - caddy-data:/data:rw
       - caddy-config:/config:rw
     environment:
-      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-http://localhost:80}
-      - SEARXNG_TLS=${LETSENCRYPT_EMAIL:-internal}
+      - SEARXNG_TLS=${LETSENCRYPT_EMAIL}
     cap_drop:
       - ALL
     cap_add:
