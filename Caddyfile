@@ -20,9 +20,9 @@
 	}
 }
 
-{$SEARXNG_HOSTNAME:http://localhost}
+{$SEARXNG_HOSTNAME}
 
-tls {$SEARXNG_TLS:internal}
+tls {$SEARXNG_TLS}
 
 encode zstd gzip
 
