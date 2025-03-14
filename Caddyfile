@@ -1,6 +1,5 @@
 {
 	admin off
-
 	log {
 		output stderr
 		format filter {
