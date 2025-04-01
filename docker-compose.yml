@@ -53,7 +53,7 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
-      - ./searxng:/etc/searxng:rw
+      - ../../custom_templates/4/searxng:/etc/searxng:rw
     environment:
       - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
       - UWSGI_WORKERS=${SEARXNG_UWSGI_WORKERS:-4}
