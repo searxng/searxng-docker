@@ -51,7 +51,7 @@ services:
     networks:
       - searxng
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8787:8787"
     volumes:
       - ../../custom_templates/4/searxng:/etc/searxng:rw
     environment:
