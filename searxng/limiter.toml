@@ -2,5 +2,6 @@
 # See https://github.com/searxng/searxng/blob/master/searx/limiter.toml
 
 [botdetection.ip_limit]
-# activate link_token method in the ip_limit method
-link_token = true
+# activate advanced bot protection
+# enable this when running the instance for a public usage on the internet
+link_token = false
