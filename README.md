@@ -44,7 +44,7 @@ There are two ways to host SearXNG. The first one doesn't require any prior know
 9. Run SearXNG in the background: `docker compose up -d`
 
 > [!NOTE]
-> You can change the port `searxng` listens on inside the docker container (e.g. if you want to operate in `host` network mode) with the `BIND_ADDRESS` environment variable (defaults to `0.0.0.0:8080`). The environment variable can be set directly inside `docker-compose.yaml`.
+> You can change the port `searxng` listens on inside the docker container (e.g. if you want to operate in `host` network mode) with the `BIND_ADDRESS` environment variable (defaults to `[::]:8080`). The environment variable can be set directly inside `docker-compose.yaml`.
 
 ## Troubleshooting - How to access the logs
 
@@ -77,14 +77,6 @@ You can skip this step if you don't use systemd.
    ```
 
 **Note:** Ensure the service file path matches your installation directory before enabling it.
-
-## Note on the image proxy feature
-
-The SearXNG image proxy is activated by default.
-
-The default [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) allows the browser to access to ```${SEARXNG_HOSTNAME}``` and ```https://*.tile.openstreetmap.org;```.
-
-If some users want to disable the image proxy, you have to modify [./Caddyfile](https://github.com/searxng/searxng-docker/blob/master/Caddyfile). Replace the ```img-src 'self' data: https://*.tile.openstreetmap.org;``` by ```img-src * data:;```.
 
 ## Multi Architecture Docker images
 
