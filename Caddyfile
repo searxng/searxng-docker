@@ -18,6 +18,15 @@
 			}
 		}
 	}
+
+	servers {
+		client_ip_headers X-Forwarded-For X-Real-IP
+
+		# Allow the following IP to passthrough the "X-Forwarded-*" headers to SearXNG
+		# https://caddyserver.com/docs/caddyfile/options#trusted-proxies
+		trusted_proxies static private_ranges
+		trusted_proxies_strict
+	}
 }
 
 {$SEARXNG_HOSTNAME}
@@ -81,11 +90,8 @@ route {
 	header @static Cache-Control "max-age=31536000, public, immutable"
 }
 
-# SearXNG (uWSGI)
+# SearXNG
 reverse_proxy localhost:8080 {
-	header_up X-Forwarded-Port {http.request.port}
-	header_up X-Real-IP {http.request.remote.host}
-
 	# https://github.com/searx/searx-docker/issues/24
 	header_up Connection "close"
 }
