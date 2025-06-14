@@ -26,9 +26,6 @@ There are two ways to host SearXNG. The first one doesn't require any prior know
 5. Edit [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) according to your needs
 
 > [!NOTE]
-> On the first run, you must remove `cap_drop: - ALL` from the `docker-compose.yaml` file for the `searxng` service to successfully create `/etc/searxng/uwsgi.ini`. This is necessary because the `cap_drop: - ALL` directive removes all capabilities, including those required for the creation of the `uwsgi.ini` file. After the first run, you should re-add `cap_drop: - ALL` to the `docker-compose.yaml` file for security reasons.
-
-> [!NOTE]
 > Windows users can use the following powershell script to generate the secret key:
 > ```powershell
 > $randomBytes = New-Object byte[] 32
