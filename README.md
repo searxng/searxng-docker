@@ -23,7 +23,7 @@ There are two ways to host SearXNG. The first one doesn't require any prior know
 3. Edit the [.env](https://github.com/searxng/searxng-docker/blob/master/.env) file to set the hostname and an email
 4. Generate the secret key `sed -i "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng/settings.yml`  
    On a Mac: `sed -i '' "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng/settings.yml`
-5. Edit [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) according to your needs
+5. Edit [searxng/settings.yml](https://github.com/searxng/searxng-docker/blob/master/searxng/settings.yml) according to your needs. An example of configurable settings can be reviewed here: [searxng/searx/settings.yml](https://github.com/searxng/searxng/blob/master/searx/settings.yml)
 
 > [!NOTE]
 > Windows users can use the following powershell script to generate the secret key:
