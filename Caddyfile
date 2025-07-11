@@ -78,8 +78,8 @@ header @api {
 route {
 	# Cache policy
 	header Cache-Control "max-age=0, public, must-revalidate"
+	header @static Cache-Control "max-age=300, public, must-revalidate"
 	header @imageproxy Cache-Control "max-age=3600, public"
-	header @static Cache-Control "max-age=31536000, public, immutable"
 }
 
 # SearXNG
