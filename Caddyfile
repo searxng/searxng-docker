@@ -42,12 +42,12 @@ encode zstd gzip
 	path /stats/checker
 }
 
-@imageproxy {
-	path /image_proxy
-}
-
 @static {
 	path /static/*
+}
+
+@imageproxy {
+	path /image_proxy
 }
 
 header {
@@ -77,9 +77,9 @@ header @api {
 
 route {
 	# Cache policy
-	header Cache-Control "max-age=0, public, must-revalidate"
-	header @imageproxy Cache-Control "max-age=3600, public"
-	header @static Cache-Control "max-age=31536000, public, immutable"
+	header Cache-Control "no-cache"
+	header @static Cache-Control "public, max-age=30, stale-while-revalidate=60"
+	header @imageproxy Cache-Control "public, max-age=3600"
 }
 
 # SearXNG
