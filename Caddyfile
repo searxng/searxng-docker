@@ -67,7 +67,9 @@ header {
 	X-Robots-Tag "noindex, nofollow, noarchive, nositelinkssearchbox, nosnippet, notranslate, noimageindex"
     
 	# enable HSTS
-	Strict-Transport-Security max-age=15768000;
+	# WARNING: Once this value is set, the site must continue to support HTTPS until the expiry time is reached.
+
+	# Strict-Transport-Security max-age=15768000;
 
 	# Remove "Server" header
 	-Server
