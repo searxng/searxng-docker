@@ -1,13 +1,13 @@
 {
 	admin off
 
+
 	log {
 		output stderr
 		format filter {
 			# Preserves first 8 bits from IPv4 and 32 bits from IPv6
 			request>remote_ip ip_mask 8 32
 			request>client_ip ip_mask 8 32
-
 			# Remove identificable information
 			request>remote_port delete
 			request>headers delete
@@ -29,11 +29,12 @@
 	}
 }
 
-{$SEARXNG_HOSTNAME}
+{$SEARXNG_HOSTNAME} {	
+	reverse_proxy {$SEARXNG_HOSTNAME}:8080
 
-tls {$SEARXNG_TLS}
+	tls {$SEARXNG_TLS}
 
-encode zstd gzip
+	encode zstd gzip
 
 @api {
 	path /config
@@ -65,7 +66,7 @@ header {
 
 	# Comment header to allow indexing by search engines
 	X-Robots-Tag "noindex, nofollow, noarchive, nositelinkssearchbox, nosnippet, notranslate, noimageindex"
-    
+
 	# enable HSTS
 	# WARNING: Once this value is set, the site must continue to support HTTPS until the expiry time is reached.
 
@@ -85,7 +86,5 @@ route {
 	header Cache-Control "no-cache"
 	header @static Cache-Control "public, max-age=30, stale-while-revalidate=60"
 	header @imageproxy Cache-Control "public, max-age=3600"
+	}
 }
-
-# SearXNG
-reverse_proxy localhost:8080
